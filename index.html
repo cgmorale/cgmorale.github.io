@@ -117,7 +117,7 @@ nav {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.6;
+  opacity: 0.85;
 }
 
 .hero-content {
@@ -827,7 +827,7 @@ footer {
   <div class="hero-content">
     <div class="hero-eyebrow">PhD · Carnegie Mellon University Robotics Institute</div>
     <h1 class="hero-name">Cecilia<br><em>Morales</em></h1>
-    <p class="hero-title">Robotics & Embodied AI Researcher</p>
+    <p class="hero-title">Applied AI & Robotics Research Scientist</p>
     <p class="hero-desc">
       I build <strong>AI systems that save lives</strong> in mass casualty events —
       autonomous robots capable of triaging and treating multiple critically injured
@@ -1213,7 +1213,7 @@ revealEls.forEach(el => observer.observe(el));
 
   function drawVictim(v) {
     const vx = v.x * W, vy = v.y * H;
-    const opacity = v.assessed ? 0.25 : 0.85;
+    const opacity = v.assessed ? 0.4 : 1.0;
     ctx.save();
     ctx.globalAlpha = opacity;
     ctx.strokeStyle = v.triage;
@@ -1273,59 +1273,68 @@ revealEls.forEach(el => observer.observe(el));
     ctx.save();
     ctx.scale(1, 0.3);
     ctx.translate(0, 85);
-    const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, 28);
-    grad.addColorStop(0, 'rgba(26,24,20,0.12)');
+    const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, 32);
+    grad.addColorStop(0, 'rgba(26,24,20,0.25)');
     grad.addColorStop(1, 'transparent');
     ctx.fillStyle = grad;
     ctx.beginPath();
-    ctx.arc(0, 0, 28, 0, Math.PI * 2);
+    ctx.arc(0, 0, 32, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
 
-    // Body
-    ctx.fillStyle = '#f0ede8';
-    ctx.strokeStyle = 'rgba(26,24,20,0.15)';
-    ctx.lineWidth = 1;
-    roundRect(ctx, -22, -12, 44, 20, 5);
+    // Body — Boston Dynamics yellow
+    ctx.fillStyle = '#e8b820';
+    ctx.strokeStyle = 'rgba(26,24,20,0.35)';
+    ctx.lineWidth = 1.5;
+    roundRect(ctx, -24, -14, 48, 22, 5);
     ctx.fill();
     ctx.stroke();
+    // Body stripe
+    ctx.fillStyle = '#d4a518';
+    roundRect(ctx, -20, -6, 40, 6, 2);
+    ctx.fill();
 
-    // Head/sensor
-    ctx.fillStyle = '#e8e4de';
-    roundRect(ctx, 16, -10, 12, 10, 3);
+    // Head/sensor arm
+    ctx.fillStyle = '#d4a518';
+    ctx.strokeStyle = 'rgba(26,24,20,0.35)';
+    roundRect(ctx, 18, -18, 8, 16, 3);
     ctx.fill();
     ctx.stroke();
+    // Camera head
+    ctx.fillStyle = '#2a2a2a';
+    roundRect(ctx, 17, -22, 10, 6, 2);
+    ctx.fill();
 
-    // Sensor dot
-    ctx.fillStyle = '#c84b2f';
-    ctx.globalAlpha = 0.5 + 0.5 * Math.sin(Date.now() / 400);
+    // Camera lens
+    ctx.fillStyle = '#4a9eff';
+    ctx.globalAlpha = 0.6 + 0.4 * Math.sin(Date.now() / 400);
     ctx.beginPath();
-    ctx.arc(23, -5, 2, 0, Math.PI * 2);
+    ctx.arc(22, -19, 2.5, 0, Math.PI * 2);
     ctx.fill();
     ctx.globalAlpha = 1;
 
-    // Top rail
-    ctx.fillStyle = '#e0dcd5';
-    roundRect(ctx, -14, -17, 22, 5, 2);
+    // Top rail / payload
+    ctx.fillStyle = '#333';
+    roundRect(ctx, -16, -20, 28, 6, 2);
     ctx.fill();
 
     // Antenna
-    ctx.strokeStyle = 'rgba(26,24,20,0.2)';
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(26,24,20,0.5)';
+    ctx.lineWidth = 1.5;
     ctx.beginPath();
-    ctx.moveTo(-6, -17); ctx.lineTo(-6, -24);
+    ctx.moveTo(-6, -20); ctx.lineTo(-6, -28);
     ctx.stroke();
     ctx.fillStyle = '#c84b2f';
-    ctx.globalAlpha = Math.sin(Date.now() / 600) > 0 ? 0.8 : 0.2;
+    ctx.globalAlpha = Math.sin(Date.now() / 600) > 0 ? 1.0 : 0.3;
     ctx.beginPath();
-    ctx.arc(-6, -26, 2, 0, Math.PI * 2);
+    ctx.arc(-6, -30, 2.5, 0, Math.PI * 2);
     ctx.fill();
     ctx.globalAlpha = 1;
 
-    // Legs
-    const legColor = 'rgba(26,24,20,0.7)';
+    // Legs — darker and thicker
+    const legColor = 'rgba(26,24,20,0.85)';
     ctx.strokeStyle = legColor;
-    ctx.lineWidth = 2.5;
+    ctx.lineWidth = 3;
     ctx.lineCap = 'round';
 
     const flSwing = Math.sin(legPhase) * 15;
@@ -1384,7 +1393,7 @@ revealEls.forEach(el => observer.observe(el));
   function drawPath() {
     if (pathHistory.length < 2) return;
     ctx.save();
-    ctx.strokeStyle = 'rgba(200,75,47,0.12)';
+    ctx.strokeStyle = 'rgba(200,75,47,0.3)';
     ctx.lineWidth = 1.5;
     ctx.setLineDash([3, 8]);
     ctx.beginPath();
