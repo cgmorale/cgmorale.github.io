@@ -1183,14 +1183,15 @@ revealEls.forEach(el => observer.observe(el));
   const ctx = canvas.getContext('2d');
 
   // Victims — scattered naturally
+  // priority: 0 = immediate (red), 1 = delayed (orange), 2 = minor (green)
   const victims = [
-    { x: 0.18, y: 0.28, triage: '#e87060', assessed: false },
-    { x: 0.55, y: 0.18, triage: '#e8a060', assessed: false },
-    { x: 0.78, y: 0.42, triage: '#e87060', assessed: false },
-    { x: 0.35, y: 0.62, triage: '#a0c890', assessed: false },
-    { x: 0.65, y: 0.72, triage: '#e8a060', assessed: false },
-    { x: 0.88, y: 0.78, triage: '#e87060', assessed: false },
-    { x: 0.22, y: 0.82, triage: '#a0c890', assessed: false },
+    { x: 0.18, y: 0.28, triage: '#e87060', priority: 0, assessed: false },
+    { x: 0.55, y: 0.18, triage: '#e8a060', priority: 1, assessed: false },
+    { x: 0.78, y: 0.42, triage: '#e87060', priority: 0, assessed: false },
+    { x: 0.35, y: 0.62, triage: '#a0c890', priority: 2, assessed: false },
+    { x: 0.65, y: 0.72, triage: '#e8a060', priority: 1, assessed: false },
+    { x: 0.88, y: 0.78, triage: '#e87060', priority: 0, assessed: false },
+    { x: 0.22, y: 0.82, triage: '#a0c890', priority: 2, assessed: false },
   ];
 
   // Spot state
@@ -1202,13 +1203,16 @@ revealEls.forEach(el => observer.observe(el));
   let scanAnimations = []; // { x, y, r, alpha }
 
   function pickNextVictim() {
-    let nearest = null, nearestD = Infinity;
+    // Prioritize by severity (red=0 first), then nearest within same priority
+    let best = null, bestPri = Infinity, bestD = Infinity;
     victims.forEach(v => {
       if (v.assessed) return;
       const d = Math.hypot(v.x - spot.x, v.y - spot.y);
-      if (d < nearestD) { nearestD = d; nearest = v; }
+      if (v.priority < bestPri || (v.priority === bestPri && d < bestD)) {
+        best = v; bestPri = v.priority; bestD = d;
+      }
     });
-    return nearest;
+    return best;
   }
 
   function drawVictim(v) {
@@ -1250,12 +1254,25 @@ revealEls.forEach(el => observer.observe(el));
     ctx.restore();
     ctx.restore();
 
-    // Checkmark if assessed
+    // Post-assessment markers
     if (v.assessed) {
-      ctx.globalAlpha = 0.5;
-      ctx.fillStyle = v.triage;
-      ctx.font = '12px sans-serif';
-      ctx.fillText('✓', vx + 16, vy - 12);
+      if (v.priority === 0) {
+        // Red/immediate: flashing HELP flag
+        const flash = 0.6 + 0.4 * Math.sin(Date.now() / 300);
+        ctx.globalAlpha = flash;
+        ctx.fillStyle = '#cc2222';
+        roundRect(ctx, vx + 12, vy - 22, 34, 16, 3);
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 9px sans-serif';
+        ctx.fillText('HELP', vx + 15, vy - 10);
+      } else {
+        ctx.globalAlpha = 0.6;
+        ctx.fillStyle = v.triage;
+        ctx.font = '12px sans-serif';
+        ctx.fillText('OK', vx + 14, vy - 10);
+      }
     }
 
     ctx.restore();
