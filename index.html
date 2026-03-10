@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cecilia Morale — Robotics & AI Researcher</title>
+<meta name="description" content="PhD Candidate at CMU Robotics Institute building AI systems that save lives in mass casualty events.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --cream: #faf8f4;
+  --warm-white: #f5f2ec;
+  --ink: #1a1814;
+  --ink-light: #4a4640;
+  --ink-faint: #9a948c;
+  --accent: #c84b2f;
+  --accent-light: #e8cdc7;
+  --accent-warm: #f0e4d8;
+  --green: #2d6a4f;
+  --green-light: #d8ede4;
+  --blue: #2c4a7c;
+  --blue-light: #dce6f5;
+  --amber: #b5621e;
+  --amber-light: #f5e6d0;
+  --border: rgba(26,24,20,0.1);
+  --shadow: 0 2px 20px rgba(26,24,20,0.08);
+  --shadow-lg: 0 8px 40px rgba(26,24,20,0.12);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 20px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(250,248,244,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  transition: padding 0.3s;
+}
+
+.nav-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: 1.1rem;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+
+.nav-name span {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: var(--ink-light);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px; left: 0; right: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s;
+}
+
+.nav-links a:hover { color: var(--ink); }
+.nav-links a:hover::after { transform: scaleX(1); }
+
+/* ── HERO ── */
+#hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 120px 48px 80px;
+}
+
+/* Subtle terrain background */
+#hero-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  max-width: 680px;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.hero-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-size: clamp(3rem, 6vw, 5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.hero-name em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--ink-light);
+  margin-bottom: 32px;
+  font-style: italic;
+}
+
+.hero-desc {
+  font-size: 1.05rem;
+  color: var(--ink-light);
+  line-height: 1.75;
+  max-width: 540px;
+  margin-bottom: 48px;
+}
+
+.hero-desc strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--cream);
+}
+
+.btn-primary:hover {
+  background: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--border);
+}
+
+.btn-outline:hover {
+  border-color: var(--ink);
+  transform: translateY(-1px);
+}
+
+/* Spot scene — right side of hero */
+#spot-scene {
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 52%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+#spot-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* Badges */
+.hero-badges {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.badge-darpa { background: var(--blue-light); color: var(--blue); }
+.badge-cmu   { background: var(--accent-light); color: var(--accent); }
+.badge-ndseg { background: var(--green-light); color: var(--green); }
+
+/* ── SECTIONS ── */
+section {
+  padding: 96px 48px;
+}
+
+.section-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  max-width: 48px;
+  height: 1px;
+  background: var(--border);
+}
+
+.section-heading {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+
+.section-heading em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.section-sub {
+  font-size: 1rem;
+  color: var(--ink-light);
+  max-width: 560px;
+  line-height: 1.75;
+  margin-bottom: 56px;
+}
+
+/* ── ABOUT ── */
+#about {
+  background: var(--warm-white);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.about-text p {
+  font-size: 1rem;
+  color: var(--ink-light);
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+.about-text p strong { color: var(--ink); font-weight: 500; }
+
+.about-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-content: start;
+}
+
+.stat-card {
+  padding: 24px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.stat-number {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 2.2rem;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+}
+
+/* ── RESEARCH PLATFORMS ── */
+#research {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.platforms {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 64px;
+}
+
+.platform-card {
+  padding: 36px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: white;
+  box-shadow: var(--shadow);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.platform-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.platform-icon {
+  width: 44px; height: 44px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+}
+
+.platform-card:nth-child(1) .platform-icon { background: var(--accent-light); }
+.platform-card:nth-child(2) .platform-icon { background: var(--green-light); }
+
+.platform-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: 1.3rem;
+  color: var(--ink);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.platform-desc {
+  font-size: 0.9rem;
+  color: var(--ink-light);
+  line-height: 1.75;
+}
+
+/* Projects grid */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.project-card {
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: white;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+
+.project-card.triage::before  { background: var(--accent); }
+.project-card.hemo::before    { background: var(--green); }
+.project-card.sensing::before { background: var(--blue); }
+.project-card.infra::before   { background: var(--amber); }
+
+.project-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.project-tag {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 2px;
+  margin-bottom: 14px;
+}
+
+.project-card.triage  .project-tag { background: var(--accent-light);  color: var(--accent); }
+.project-card.hemo    .project-tag { background: var(--green-light);   color: var(--green); }
+.project-card.sensing .project-tag { background: var(--blue-light);    color: var(--blue); }
+.project-card.infra   .project-tag { background: var(--amber-light);   color: var(--amber); }
+
+.project-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: 1.15rem;
+  color: var(--ink);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.project-subtitle {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+
+.project-desc {
+  font-size: 0.88rem;
+  color: var(--ink-light);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.project-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  font-size: 0.65rem;
+  padding: 3px 8px;
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--ink-faint);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+/* ── rPPG DEMO ── */
+#demo {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 96px 48px;
+}
+
+#demo .section-label { color: rgba(250,248,244,0.3); }
+#demo .section-label::after { background: rgba(250,248,244,0.1); }
+#demo .section-heading { color: var(--cream); }
+#demo .section-sub { color: rgba(250,248,244,0.55); }
+
+.demo-container {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.demo-video-wrap {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #0d0c0a;
+  aspect-ratio: 4/3;
+  border: 1px solid rgba(250,248,244,0.1);
+}
+
+#webcam {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+  display: block;
+}
+
+.demo-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Face box */
+#face-box {
+  position: absolute;
+  border: 1.5px solid var(--accent);
+  box-shadow: 0 0 0 1px rgba(200,75,47,0.3);
+  transition: all 0.1s;
+  display: none;
+}
+
+#face-box.visible { display: block; }
+
+/* Corner accents */
+#face-box::before, #face-box::after {
+  content: '';
+  position: absolute;
+  width: 10px; height: 10px;
+}
+
+#face-box::before { top: -2px; left: -2px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+#face-box::after  { bottom: -2px; right: -2px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); }
+
+.demo-status {
+  position: absolute;
+  top: 12px; left: 12px;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(250,248,244,0.5);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--ink-faint);
+}
+
+.status-dot.active {
+  background: var(--accent);
+  animation: blink 1s infinite;
+}
+
+@keyframes blink { 50% { opacity: 0.3; } }
+
+.demo-info {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.hr-display {
+  padding: 28px;
+  border: 1px solid rgba(250,248,244,0.1);
+  border-radius: 4px;
+  background: rgba(250,248,244,0.04);
+}
+
+.hr-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(250,248,244,0.35);
+  margin-bottom: 8px;
+}
+
+.hr-value {
+  font-family: 'Fraunces', serif;
+  font-size: 3.5rem;
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.hr-unit {
+  font-size: 1rem;
+  color: rgba(250,248,244,0.3);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.hr-sub {
+  font-size: 0.75rem;
+  color: rgba(250,248,244,0.3);
+}
+
+/* Signal graph */
+.signal-wrap {
+  border: 1px solid rgba(250,248,244,0.08);
+  border-radius: 4px;
+  overflow: hidden;
+  background: rgba(0,0,0,0.3);
+}
+
+#signal-canvas {
+  display: block;
+  width: 100%;
+  height: 80px;
+}
+
+.demo-note {
+  font-size: 0.78rem;
+  color: rgba(250,248,244,0.3);
+  line-height: 1.7;
+}
+
+.demo-note strong { color: rgba(250,248,244,0.6); font-weight: 400; }
+
+.btn-demo {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  font-size: 0.85rem;
+  font-family: 'DM Sans', sans-serif;
+  border-radius: 2px;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.btn-demo:hover { background: #b0402a; transform: translateY(-1px); }
+.btn-demo:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* ── CONTACT ── */
+#contact {
+  background: var(--warm-white);
+  border-top: 1px solid var(--border);
+}
+
+.contact-grid {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--cream);
+  font-size: 0.88rem;
+  transition: all 0.2s;
+}
+
+.contact-link:hover {
+  border-color: var(--ink);
+  transform: translateX(4px);
+}
+
+.contact-link-icon {
+  width: 32px; height: 32px;
+  border-radius: 4px;
+  background: var(--warm-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.contact-text h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-size: 1.5rem;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+.contact-text p {
+  font-size: 0.9rem;
+  color: var(--ink-light);
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 28px 48px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-name {
+  font-family: 'Fraunces', serif;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--ink-faint);
+}
+
+.footer-copy {
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+}
+
+/* ── ANIMATIONS ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  nav { padding: 16px 24px; }
+  section { padding: 64px 24px; }
+  #hero { padding: 100px 24px 60px; }
+  .about-grid, .platforms, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+  .projects-grid { grid-template-columns: 1fr 1fr; }
+  .demo-container { grid-template-columns: 1fr; }
+  #spot-scene { opacity: 0.4; }
+  footer { flex-direction: column; gap: 8px; text-align: center; }
+}
+
+@media (max-width: 600px) {
+  .projects-grid { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .hero-name { font-size: 2.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-name">Cecilia <span>Morale</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#demo">Demo</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">PhD Candidate · CMU Robotics Institute</div>
+    <h1 class="hero-name">Cecilia<br><em>Morale</em></h1>
+    <p class="hero-title">Robotics & Embodied AI Researcher</p>
+    <p class="hero-desc">
+      I build <strong>AI systems that save lives</strong> in mass casualty events —
+      autonomous robots capable of triaging and treating multiple critically injured
+      patients simultaneously, extending the reach of a single first responder.
+    </p>
+    <div class="hero-ctas">
+      <a href="#research" class="btn btn-primary">View Research</a>
+      <a href="#contact" class="btn btn-outline">Get in Touch</a>
+      <a href="resume.pdf" class="btn btn-outline" target="_blank">CV / Résumé ↗</a>
+    </div>
+    <div class="hero-badges">
+      <span class="badge badge-darpa">DARPA Triage Challenge</span>
+      <span class="badge badge-ndseg">NDSEG Fellow</span>
+      <span class="badge badge-cmu">CMU Robotics</span>
+    </div>
+  </div>
+
+  <!-- Spot walking scene -->
+  <div id="spot-scene">
+    <canvas id="spot-canvas"></canvas>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <div class="section-label">About</div>
+      <h2 class="section-heading">Medical <em>force</em> multipliers</h2>
+      <p>
+        My research centers on a single question: <strong>what if one responder could save many?</strong>
+        In mass casualty events, the gap between patients who need immediate care and the responders
+        available to provide it costs lives. I build the systems that close that gap.
+      </p>
+      <p>
+        At CMU's Robotics Institute, advised by Artur Dubrawski, I develop autonomous robots
+        that can assess patient vitals, locate hemorrhage sites, and perform procedural interventions —
+        without waiting for a human to be free.
+      </p>
+      <p>
+        My philosophy: AI should <strong>extend human expertise</strong>, not replace it.
+        Every system I build is designed around uncertainty quantification, equity across patient
+        populations, and real-time performance on actual hardware — not just in simulation.
+      </p>
+    </div>
+    <div class="about-stats reveal" style="transition-delay: 0.15s">
+      <div class="stat-card">
+        <div class="stat-number">2</div>
+        <div class="stat-label">Autonomous robotic platforms built & validated</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">12+</div>
+        <div class="stat-label">Benchmark methods outperformed by PRISM</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">4</div>
+        <div class="stat-label">Public datasets used + 1 novel dataset released</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">In vivo</div>
+        <div class="stat-label">Animal validation on real surgical hardware</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section id="research">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="section-label reveal">Research</div>
+    <h2 class="section-heading reveal">Two platforms, <em>one mission</em></h2>
+    <p class="section-sub reveal">
+      My dissertation organizes around two autonomous systems,
+      each addressing a critical phase of mass casualty response.
+    </p>
+
+    <div class="platforms">
+      <div class="platform-card reveal">
+        <div class="platform-icon">🤖</div>
+        <h3 class="platform-title">Autonomous Multi-Patient Triage</h3>
+        <p class="platform-desc">
+          A robotic system that navigates to patients, estimates vital signs
+          through non-contact sensing, and makes triage decisions using
+          a Bayesian network with embedded clinical knowledge — all in real time,
+          across multiple simultaneous casualties.
+        </p>
+      </div>
+      <div class="platform-card reveal" style="transition-delay:0.1s">
+        <div class="platform-icon">🩺</div>
+        <h3 class="platform-title">Autonomous Hemorrhage Control</h3>
+        <p class="platform-desc">
+          An ultrasound-guided robotic system for femoral vessel cannulation —
+          locating bleeding vessels, tracking tissue deformation, and guiding
+          needle placement to control life-threatening hemorrhage without
+          a trained clinician present.
+        </p>
+      </div>
+    </div>
+
+    <div class="projects-grid">
+
+      <div class="project-card sensing reveal">
+        <div class="project-tag">Sensing · rPPG</div>
+        <h3 class="project-name">PRISM</h3>
+        <div class="project-subtitle">Training-Free Adaptive rPPG</div>
+        <p class="project-desc">
+          A parameter-free algorithm for estimating heart rate from video in
+          challenging outdoor environments. Introduces spectral concentration
+          and total variation metrics for adaptive signal optimization.
+          Outperforms 12 state-of-the-art methods across 4 datasets, including
+          the novel NATURE outdoor benchmark I collected and released.
+        </p>
+        <div class="project-chips">
+          <span class="chip">Python</span>
+          <span class="chip">Signal Processing</span>
+          <span class="chip">NATURE Dataset</span>
+          <span class="chip">rPPG-Toolbox</span>
+          <span class="chip">ICRA</span>
+        </div>
+      </div>
+
+      <div class="project-card hemo reveal" style="transition-delay:0.1s">
+        <div class="project-tag">Hemorrhage · Ultrasound</div>
+        <h3 class="project-name">RESUS</h3>
+        <div class="project-subtitle">Ultrasound Augmentation for Cannulation</div>
+        <p class="project-desc">
+          Augmentation pipeline for ultrasound imagery that improves
+          downstream vessel detection and needle guidance in low-quality,
+          real-world scans. Designed for data-scarce surgical robotics settings
+          with limited labeled training examples.
+        </p>
+        <div class="project-chips">
+          <span class="chip">PyTorch</span>
+          <span class="chip">Ultrasound</span>
+          <span class="chip">Data Augmentation</span>
+          <span class="chip">Surgical Robotics</span>
+        </div>
+      </div>
+
+      <div class="project-card triage reveal" style="transition-delay:0.2s">
+        <div class="project-tag">Triage · Uncertainty</div>
+        <h3 class="project-name">MSU-Net</h3>
+        <div class="project-subtitle">Uncertainty Quantification for Triage</div>
+        <p class="project-desc">
+          A segmentation network with first-class uncertainty quantification,
+          enabling the triage system to communicate confidence alongside
+          predictions. Critical for deployable AI in high-stakes medical decisions
+          with limited training data.
+        </p>
+        <div class="project-chips">
+          <span class="chip">Bayesian Deep Learning</span>
+          <span class="chip">Segmentation</span>
+          <span class="chip">UQ</span>
+          <span class="chip">PyTorch</span>
+        </div>
+      </div>
+
+      <div class="project-card hemo reveal" style="transition-delay:0.1s">
+        <div class="project-tag">Hemorrhage · Navigation</div>
+        <h3 class="project-name">BIFURC</h3>
+        <div class="project-subtitle">Vessel Bifurcation Detection</div>
+        <p class="project-desc">
+          Automated detection of femoral vessel bifurcation landmarks in
+          ultrasound imagery — a critical navigation prerequisite for autonomous
+          cannulation. Validated on in vivo animal data under real surgical
+          conditions.
+        </p>
+        <div class="project-chips">
+          <span class="chip">Computer Vision</span>
+          <span class="chip">Ultrasound</span>
+          <span class="chip">In Vivo Validation</span>
+          <span class="chip">ROS2</span>
+        </div>
+      </div>
+
+      <div class="project-card triage reveal" style="transition-delay:0.2s">
+        <div class="project-tag">Triage · Decision-Making</div>
+        <h3 class="project-name">Bayesian Triage Network</h3>
+        <div class="project-subtitle">Clinical Knowledge-Embedded BN</div>
+        <p class="project-desc">
+          A Bayesian network integrating real-time sensor streams from ROS2 nodes
+          with embedded clinical triage protocols. Enables data-efficient
+          decision-making by grounding probabilistic inference in structured
+          medical domain knowledge.
+        </p>
+        <div class="project-chips">
+          <span class="chip">Bayesian Networks</span>
+          <span class="chip">ROS2</span>
+          <span class="chip">Clinical AI</span>
+          <span class="chip">DARPA</span>
+        </div>
+      </div>
+
+      <div class="project-card infra reveal" style="transition-delay:0.3s">
+        <div class="project-tag">Infrastructure · Visualization</div>
+        <h3 class="project-name">Needle Tracking & 3D Viz</h3>
+        <div class="project-subtitle">Real-Time Surgical Tool Tracking</div>
+        <p class="project-desc">
+          Real-time needle tracking under tissue deformation, plus a 3D
+          ultrasound visualization tool for intraoperative spatial awareness.
+          Built for deployment on actual robotic hardware with hard latency
+          constraints.
+        </p>
+        <div class="project-chips">
+          <span class="chip">ROS2</span>
+          <span class="chip">3D Reconstruction</span>
+          <span class="chip">Real-Time</span>
+          <span class="chip">Hardware</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- rPPG DEMO -->
+<section id="demo">
+  <div style="max-width:900px;margin:0 auto">
+    <div class="section-label">Live Demo</div>
+    <h2 class="section-heading">PRISM — <em>see it work</em></h2>
+    <p class="section-sub">
+      My rPPG algorithm estimates your heart rate from your webcam — no contact, no wearables.
+      This is the same approach used to assess patient vitals on the triage robot.
+    </p>
+
+    <div class="demo-container">
+      <div>
+        <div class="demo-video-wrap">
+          <video id="webcam" autoplay muted playsinline></video>
+          <div class="demo-overlay">
+            <div id="face-box"></div>
+            <div class="demo-status">
+              <div class="status-dot" id="status-dot"></div>
+              <span id="status-text">Camera off</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:12px">
+          <button class="btn-demo" id="demo-btn" onclick="toggleDemo()">
+            <span id="demo-btn-text">▶ Start Demo</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="demo-info">
+        <div class="hr-display">
+          <div class="hr-label">Estimated Heart Rate</div>
+          <div class="hr-value">
+            <span id="hr-number">—</span>
+            <span class="hr-unit">BPM</span>
+          </div>
+          <div class="hr-sub" id="hr-confidence">Waiting for signal...</div>
+        </div>
+
+        <div class="signal-wrap">
+          <canvas id="signal-canvas" width="400" height="80"></canvas>
+        </div>
+
+        <p class="demo-note">
+          <strong>How it works:</strong> PRISM extracts the photoplethysmographic
+          signal from subtle color changes in your skin. It uses spectral concentration
+          and total variation to adaptively select the optimal signal component —
+          no training required, works in varying lighting conditions.
+        </p>
+
+        <p class="demo-note" style="margin-top:-8px">
+          Video is processed <strong>entirely in your browser</strong>. Nothing is sent to a server.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-grid">
+    <div class="contact-text reveal">
+      <div class="section-label">Contact</div>
+      <h3>Let's build <em style="font-family:Fraunces,serif;font-style:italic;color:var(--accent)">something</em> that matters</h3>
+      <p>
+        I'm completing my PhD at CMU and actively exploring research positions
+        in industry — particularly at organizations working on healthcare AI,
+        medical robotics, embodied AI, or safety-critical autonomous systems.
+      </p>
+      <p>
+        If you're working on hard problems where AI meets the physical world
+        and the stakes are real, I'd love to talk.
+      </p>
+    </div>
+    <div class="reveal" style="transition-delay:0.15s">
+      <div class="contact-links">
+        <a href="mailto:cgmorale@andrew.cmu.edu" class="contact-link">
+          <div class="contact-link-icon">✉</div>
+          <div>
+            <div style="font-weight:500;margin-bottom:2px">Email</div>
+            <div style="font-size:0.78rem;color:var(--ink-faint)">cgmorale@andrew.cmu.edu</div>
+          </div>
+        </a>
+        <a href="https://github.com/cgmorale" target="_blank" class="contact-link">
+          <div class="contact-link-icon">⌥</div>
+          <div>
+            <div style="font-weight:500;margin-bottom:2px">GitHub</div>
+            <div style="font-size:0.78rem;color:var(--ink-faint)">github.com/cgmorale</div>
+          </div>
+        </a>
+        <a href="https://linkedin.com/in/cgmorale" target="_blank" class="contact-link">
+          <div class="contact-link-icon">in</div>
+          <div>
+            <div style="font-weight:500;margin-bottom:2px">LinkedIn</div>
+            <div style="font-size:0.78rem;color:var(--ink-faint)">linkedin.com/in/cgmorale</div>
+          </div>
+        </a>
+        <a href="https://scholar.google.com" target="_blank" class="contact-link">
+          <div class="contact-link-icon">◎</div>
+          <div>
+            <div style="font-weight:500;margin-bottom:2px">Google Scholar</div>
+            <div style="font-size:0.78rem;color:var(--ink-faint)">Publications & citations</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Cecilia Morale</div>
+  <div class="footer-copy">PhD Candidate · CMU Robotics Institute · Pittsburgh, PA</div>
+</footer>
+
+
+<script>
+// ── SCROLL REVEAL ──
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => observer.observe(el));
+
+// ── SPOT ANIMATION ──
+(function() {
+  const canvas = document.getElementById('spot-canvas');
+  const scene  = document.getElementById('spot-scene');
+  let W, H;
+
+  function resize() {
+    W = canvas.width  = scene.offsetWidth;
+    H = canvas.height = scene.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const ctx = canvas.getContext('2d');
+
+  // Victims — scattered naturally
+  const victims = [
+    { x: 0.18, y: 0.28, triage: '#e87060', assessed: false },
+    { x: 0.55, y: 0.18, triage: '#e8a060', assessed: false },
+    { x: 0.78, y: 0.42, triage: '#e87060', assessed: false },
+    { x: 0.35, y: 0.62, triage: '#a0c890', assessed: false },
+    { x: 0.65, y: 0.72, triage: '#e8a060', assessed: false },
+    { x: 0.88, y: 0.78, triage: '#e87060', assessed: false },
+    { x: 0.22, y: 0.82, triage: '#a0c890', assessed: false },
+  ];
+
+  // Spot state
+  let spot = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5, walking: false, facingLeft: false };
+  let legPhase = 0;
+  let pathHistory = [];
+  let currentTarget = null;
+  let pauseTimer = 0;
+  let scanAnimations = []; // { x, y, r, alpha }
+
+  function pickNextVictim() {
+    let nearest = null, nearestD = Infinity;
+    victims.forEach(v => {
+      if (v.assessed) return;
+      const d = Math.hypot(v.x - spot.x, v.y - spot.y);
+      if (d < nearestD) { nearestD = d; nearest = v; }
+    });
+    return nearest;
+  }
+
+  function drawVictim(v) {
+    const vx = v.x * W, vy = v.y * H;
+    const opacity = v.assessed ? 0.25 : 0.85;
+    ctx.save();
+    ctx.globalAlpha = opacity;
+    ctx.strokeStyle = v.triage;
+    ctx.fillStyle = v.triage;
+    ctx.lineWidth = 1.5;
+
+    // Pulse ring
+    if (!v.assessed) {
+      const pulseR = 10 + 4 * Math.sin(Date.now() / 500);
+      ctx.beginPath();
+      ctx.arc(vx, vy, pulseR, 0, Math.PI * 2);
+      ctx.globalAlpha = 0.15;
+      ctx.fill();
+      ctx.globalAlpha = opacity;
+    }
+
+    // Lying figure
+    ctx.save();
+    ctx.translate(vx, vy);
+    // Head
+    ctx.beginPath();
+    ctx.arc(-12, 0, 4, 0, Math.PI * 2);
+    ctx.fill();
+    // Body
+    ctx.fillRect(-8, -3, 16, 6);
+    // Legs
+    ctx.fillRect(7, -5, 10, 3);
+    ctx.fillRect(7, 2, 10, 3);
+    // Arm up
+    ctx.save();
+    ctx.translate(-2, -3);
+    ctx.rotate(-0.5);
+    ctx.fillRect(-1, -8, 2.5, 8);
+    ctx.restore();
+    ctx.restore();
+
+    // Checkmark if assessed
+    if (v.assessed) {
+      ctx.globalAlpha = 0.5;
+      ctx.fillStyle = v.triage;
+      ctx.font = '12px sans-serif';
+      ctx.fillText('✓', vx + 16, vy - 12);
+    }
+
+    ctx.restore();
+  }
+
+  function drawSpot(sx, sy) {
+    ctx.save();
+    ctx.translate(sx, sy);
+    if (spot.facingLeft) ctx.scale(-1, 1);
+
+    const bob = spot.walking ? Math.sin(legPhase * 2) * 1.5 : 0;
+    ctx.translate(0, bob);
+
+    // Shadow
+    ctx.save();
+    ctx.scale(1, 0.3);
+    ctx.translate(0, 85);
+    const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, 28);
+    grad.addColorStop(0, 'rgba(26,24,20,0.12)');
+    grad.addColorStop(1, 'transparent');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(0, 0, 28, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Body
+    ctx.fillStyle = '#f0ede8';
+    ctx.strokeStyle = 'rgba(26,24,20,0.15)';
+    ctx.lineWidth = 1;
+    roundRect(ctx, -22, -12, 44, 20, 5);
+    ctx.fill();
+    ctx.stroke();
+
+    // Head/sensor
+    ctx.fillStyle = '#e8e4de';
+    roundRect(ctx, 16, -10, 12, 10, 3);
+    ctx.fill();
+    ctx.stroke();
+
+    // Sensor dot
+    ctx.fillStyle = '#c84b2f';
+    ctx.globalAlpha = 0.5 + 0.5 * Math.sin(Date.now() / 400);
+    ctx.beginPath();
+    ctx.arc(23, -5, 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // Top rail
+    ctx.fillStyle = '#e0dcd5';
+    roundRect(ctx, -14, -17, 22, 5, 2);
+    ctx.fill();
+
+    // Antenna
+    ctx.strokeStyle = 'rgba(26,24,20,0.2)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(-6, -17); ctx.lineTo(-6, -24);
+    ctx.stroke();
+    ctx.fillStyle = '#c84b2f';
+    ctx.globalAlpha = Math.sin(Date.now() / 600) > 0 ? 0.8 : 0.2;
+    ctx.beginPath();
+    ctx.arc(-6, -26, 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // Legs
+    const legColor = 'rgba(26,24,20,0.7)';
+    ctx.strokeStyle = legColor;
+    ctx.lineWidth = 2.5;
+    ctx.lineCap = 'round';
+
+    const flSwing = Math.sin(legPhase) * 15;
+    const blSwing = Math.sin(legPhase + Math.PI) * 15;
+
+    drawLeg(ctx, -14, 8, flSwing, false);
+    drawLeg(ctx, -14, 8, flSwing + 8, true);
+    drawLeg(ctx,  14, 8, blSwing, false);
+    drawLeg(ctx,  14, 8, blSwing + 8, true);
+
+    ctx.restore();
+  }
+
+  function drawLeg(ctx, bx, by, swing, back) {
+    const s = back ? -1 : 1;
+    const angle = (swing * Math.PI) / 180;
+    const kx = bx + Math.sin(angle) * 10;
+    const ky = by + Math.cos(angle) * 10;
+    const fx = kx + Math.sin(angle * 0.5) * 8;
+    const fy = ky + 8;
+
+    ctx.save();
+    ctx.globalAlpha = back ? 0.5 : 1;
+    ctx.beginPath();
+    ctx.moveTo(bx, by);
+    ctx.lineTo(kx, ky);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(kx, ky);
+    ctx.lineTo(fx, fy);
+    ctx.stroke();
+    // Foot
+    ctx.beginPath();
+    ctx.moveTo(fx - 6, fy);
+    ctx.lineTo(fx + 4, fy);
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.lineWidth = 2.5;
+    ctx.restore();
+  }
+
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+  }
+
+  function drawPath() {
+    if (pathHistory.length < 2) return;
+    ctx.save();
+    ctx.strokeStyle = 'rgba(200,75,47,0.12)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([3, 8]);
+    ctx.beginPath();
+    ctx.moveTo(pathHistory[0].x * W, pathHistory[0].y * H);
+    for (let i = 1; i < pathHistory.length; i++) {
+      ctx.lineTo(pathHistory[i].x * W, pathHistory[i].y * H);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  let lastPathRecord = { ...spot };
+
+  function loop() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Draw path
+    drawPath();
+
+    // Draw victims
+    victims.forEach(drawVictim);
+
+    // Scan animations
+    scanAnimations = scanAnimations.filter(s => s.alpha > 0);
+    scanAnimations.forEach(s => {
+      ctx.save();
+      ctx.strokeStyle = `rgba(45,106,79,${s.alpha})`;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+      s.r += 1.2;
+      s.alpha -= 0.018;
+    });
+
+    // Move spot
+    if (pauseTimer > 0) {
+      pauseTimer--;
+    } else {
+      if (!currentTarget) {
+        currentTarget = pickNextVictim();
+        if (currentTarget) {
+          spot.walking = true;
+        } else {
+          // All done — idle patrol
+          if (!spot.walking) {
+            spot.tx = 0.1 + Math.random() * 0.8;
+            spot.ty = 0.15 + Math.random() * 0.7;
+            spot.walking = true;
+          }
+        }
+      }
+
+      if (currentTarget) {
+        const dx = currentTarget.x - spot.x;
+        const dy = currentTarget.y - spot.y;
+        const dist = Math.hypot(dx, dy);
+        spot.facingLeft = dx < 0;
+
+        if (dist < 0.04) {
+          // Arrived
+          if (!currentTarget.assessed) {
+            currentTarget.assessed = true;
+            // Spawn scan
+            for (let i = 0; i < 3; i++) {
+              setTimeout(() => {
+                scanAnimations.push({ x: currentTarget.x, y: currentTarget.y, r: 5, alpha: 0.8 });
+              }, i * 200);
+            }
+          }
+          currentTarget = null;
+          spot.walking = false;
+          pauseTimer = 80;
+        } else {
+          const speed = 0.0018;
+          spot.x += (dx / dist) * speed;
+          spot.y += (dy / dist) * speed;
+        }
+      } else if (spot.tx !== undefined) {
+        const dx = spot.tx - spot.x;
+        const dy = spot.ty - spot.y;
+        const dist = Math.hypot(dx, dy);
+        spot.facingLeft = dx < 0;
+        if (dist < 0.04) {
+          spot.walking = false;
+          spot.tx = undefined;
+        } else {
+          const speed = 0.0012;
+          spot.x += (dx / dist) * speed;
+          spot.y += (dy / dist) * speed;
+        }
+      }
+
+      // Record path
+      if (Math.hypot(spot.x - lastPathRecord.x, spot.y - lastPathRecord.y) > 0.03) {
+        pathHistory.push({ x: spot.x, y: spot.y });
+        if (pathHistory.length > 60) pathHistory.shift();
+        lastPathRecord = { ...spot };
+      }
+    }
+
+    if (spot.walking) legPhase += 0.12;
+
+    drawSpot(spot.x * W, spot.y * H);
+
+    requestAnimationFrame(loop);
+  }
+
+  loop();
+})();
+
+
+// ── rPPG DEMO ──
+let demoActive = false;
+let videoStream = null;
+let signalBuffer = [];
+let hrHistory = [];
+let animFrame = null;
+
+const videoEl   = document.getElementById('webcam');
+const signalCtx = document.getElementById('signal-canvas').getContext('2d');
+const hrNum     = document.getElementById('hr-number');
+const hrConf    = document.getElementById('hr-confidence');
+const statusDot = document.getElementById('status-dot');
+const statusTxt = document.getElementById('status-text');
+const faceBox   = document.getElementById('face-box');
+const demoBtn   = document.getElementById('demo-btn');
+
+async function toggleDemo() {
+  if (demoActive) {
+    stopDemo();
+  } else {
+    await startDemo();
+  }
+}
+
+async function startDemo() {
+  try {
+    videoStream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480, facingMode: 'user' } });
+    videoEl.srcObject = videoStream;
+    demoActive = true;
+    demoBtn.querySelector('#demo-btn-text').textContent = '■ Stop Demo';
+    statusDot.classList.add('active');
+    statusTxt.textContent = 'Analyzing...';
+    signalBuffer = [];
+    hrHistory = [];
+    processFrames();
+  } catch (e) {
+    statusTxt.textContent = 'Camera access denied';
+    hrConf.textContent = 'Please allow camera access to try the demo.';
+  }
+}
+
+function stopDemo() {
+  demoActive = false;
+  if (videoStream) videoStream.getTracks().forEach(t => t.stop());
+  if (animFrame) cancelAnimationFrame(animFrame);
+  demoBtn.querySelector('#demo-btn-text').textContent = '▶ Start Demo';
+  statusDot.classList.remove('active');
+  statusTxt.textContent = 'Camera off';
+  hrNum.textContent = '—';
+  hrConf.textContent = 'Waiting for signal...';
+  faceBox.classList.remove('visible');
+}
+
+// Simple rPPG: extract green channel average from face region, bandpass, estimate frequency
+const offscreen = document.createElement('canvas');
+offscreen.width = 64; offscreen.height = 64;
+const offCtx = offscreen.getContext('2d');
+
+const SAMPLE_RATE = 15; // ~15 fps
+const WINDOW_SECS = 10;
+const WINDOW_SAMPLES = SAMPLE_RATE * WINDOW_SECS;
+let lastFrameTime = 0;
+
+function processFrames() {
+  if (!demoActive) return;
+  const now = performance.now();
+
+  if (now - lastFrameTime > 1000 / SAMPLE_RATE) {
+    lastFrameTime = now;
+
+    // Draw video frame to offscreen canvas (center crop ~face region)
+    offCtx.drawImage(videoEl, 0, 0, 64, 64);
+    const imgData = offCtx.getImageData(16, 4, 32, 32);
+
+    // Extract POS-inspired signal: G - (R+B)/2 weighted
+    let r = 0, g = 0, b = 0, n = 0;
+    for (let i = 0; i < imgData.data.length; i += 4) {
+      r += imgData.data[i];
+      g += imgData.data[i+1];
+      b += imgData.data[i+2];
+      n++;
+    }
+    r /= n; g /= n; b /= n;
+
+    // Normalize channels
+    const totalMean = (r + g + b) / 3;
+    if (totalMean > 10) {
+      const rn = r / totalMean;
+      const gn = g / totalMean;
+      const bn = b / totalMean;
+      // POS projection
+      const s = gn - rn * 0.7 + bn * 0.1;
+      signalBuffer.push(s);
+
+      // Simulated face box
+      const vw = videoEl.offsetWidth, vh = videoEl.offsetHeight;
+      faceBox.style.left   = (vw * 0.28) + 'px';
+      faceBox.style.top    = (vh * 0.08) + 'px';
+      faceBox.style.width  = (vw * 0.44) + 'px';
+      faceBox.style.height = (vh * 0.6) + 'px';
+      faceBox.classList.add('visible');
+    }
+
+    if (signalBuffer.length > WINDOW_SAMPLES) signalBuffer.shift();
+
+    // Estimate HR every 30 frames
+    if (signalBuffer.length >= SAMPLE_RATE * 5 && signalBuffer.length % 10 === 0) {
+      const hr = estimateHR(signalBuffer, SAMPLE_RATE);
+      if (hr) {
+        hrHistory.push(hr);
+        if (hrHistory.length > 5) hrHistory.shift();
+        const smoothHr = Math.round(hrHistory.reduce((a,b)=>a+b,0) / hrHistory.length);
+        hrNum.textContent = smoothHr;
+        const quality = signalBuffer.length > SAMPLE_RATE * 8 ? 'Good signal quality' : 'Warming up...';
+        hrConf.textContent = quality;
+      }
+    }
+  }
+
+  drawSignal();
+  animFrame = requestAnimationFrame(processFrames);
+}
+
+function estimateHR(signal, fs) {
+  // Simple autocorrelation-based HR estimation
+  const n = signal.length;
+  const mean = signal.reduce((a,b)=>a+b,0)/n;
+  const centered = signal.map(v=>v-mean);
+
+  // Bandpass: only consider lags corresponding to 45–180 BPM
+  const lagMin = Math.floor(fs * 60 / 180);
+  const lagMax = Math.ceil(fs * 60 / 45);
+
+  let bestLag = lagMin, bestCorr = -Infinity;
+  for (let lag = lagMin; lag <= Math.min(lagMax, n-1); lag++) {
+    let corr = 0;
+    for (let i = 0; i < n - lag; i++) corr += centered[i] * centered[i + lag];
+    if (corr > bestCorr) { bestCorr = corr; bestLag = lag; }
+  }
+
+  return Math.round(60 / (bestLag / fs));
+}
+
+function drawSignal() {
+  const w = document.getElementById('signal-canvas').offsetWidth || 400;
+  const h = 80;
+  document.getElementById('signal-canvas').width = w;
+  signalCtx.clearRect(0, 0, w, h);
+
+  if (signalBuffer.length < 2) {
+    signalCtx.fillStyle = 'rgba(250,248,244,0.05)';
+    signalCtx.fillRect(0, 0, w, h);
+    return;
+  }
+
+  const disp = signalBuffer.slice(-150);
+  const min = Math.min(...disp), max = Math.max(...disp);
+  const range = max - min || 1;
+
+  signalCtx.fillStyle = 'rgba(0,0,0,0.25)';
+  signalCtx.fillRect(0, 0, w, h);
+
+  // Grid line
+  signalCtx.strokeStyle = 'rgba(250,248,244,0.06)';
+  signalCtx.lineWidth = 1;
+  signalCtx.beginPath();
+  signalCtx.moveTo(0, h/2); signalCtx.lineTo(w, h/2);
+  signalCtx.stroke();
+
+  // Signal
+  const grad = signalCtx.createLinearGradient(0, 0, 0, h);
+  grad.addColorStop(0, 'rgba(200,75,47,0.9)');
+  grad.addColorStop(1, 'rgba(200,75,47,0.3)');
+
+  signalCtx.strokeStyle = grad;
+  signalCtx.lineWidth = 1.5;
+  signalCtx.beginPath();
+  disp.forEach((v, i) => {
+    const x = (i / (disp.length - 1)) * w;
+    const y = h - ((v - min) / range) * (h - 10) - 5;
+    i === 0 ? signalCtx.moveTo(x, y) : signalCtx.lineTo(x, y);
+  });
+  signalCtx.stroke();
+}
+</script>
+
+</body>
+</html>
