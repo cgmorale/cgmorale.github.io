@@ -1193,13 +1193,21 @@ revealEls.forEach(el => observer.observe(el));
     { x: 0.22, y: 0.82, triage: '#a0c890', priority: 2, assessed: false, vitals: { hr: 68, spo2: 97, rr: 14 } },
   ];
 
-  // Spot state
+  // Spot state (triage robot)
   let spot = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5, walking: false, facingLeft: false };
   let legPhase = 0;
   let pathHistory = [];
   let currentTarget = null;
   let pauseTimer = 0;
   let scanAnimations = []; // { x, y, r, alpha }
+  let allAssessed = false;
+
+  // Treatment robot state — enters after triage is complete
+  let treatBot = { x: -0.08, y: 0.5, walking: false, facingLeft: false, active: false, arrived: false };
+  let treatLegPhase = 0;
+  let treatTarget = null;
+  let treatPauseTimer = 0;
+  let treatPathHistory = [];
 
   function pickNextVictim() {
     // Prioritize by severity (red=0 first), then nearest within same priority
@@ -1386,6 +1394,91 @@ revealEls.forEach(el => observer.observe(el));
     ctx.restore();
   }
 
+  // Treatment robot — similar to Spot but with a red cross / medical accent
+  function drawTreatBot(sx, sy) {
+    ctx.save();
+    ctx.translate(sx, sy);
+    if (treatBot.facingLeft) ctx.scale(-1, 1);
+
+    const bob = treatBot.walking ? Math.sin(treatLegPhase * 2) * 1.5 : 0;
+    ctx.translate(0, bob);
+
+    // Shadow
+    ctx.save();
+    ctx.scale(1, 0.3);
+    ctx.translate(0, 85);
+    const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, 32);
+    grad.addColorStop(0, 'rgba(26,24,20,0.25)');
+    grad.addColorStop(1, 'transparent');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(0, 0, 32, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Body — white/medical
+    ctx.fillStyle = '#e8e8e4';
+    ctx.strokeStyle = 'rgba(26,24,20,0.35)';
+    ctx.lineWidth = 1.5;
+    roundRect(ctx, -24, -14, 48, 22, 5);
+    ctx.fill();
+    ctx.stroke();
+    // Red cross on body
+    ctx.fillStyle = '#cc2222';
+    ctx.fillRect(-3, -12, 6, 18);
+    ctx.fillRect(-9, -6, 18, 6);
+
+    // Head/sensor arm
+    ctx.fillStyle = '#d0d0cc';
+    ctx.strokeStyle = 'rgba(26,24,20,0.35)';
+    roundRect(ctx, 18, -18, 8, 16, 3);
+    ctx.fill();
+    ctx.stroke();
+    // Camera head
+    ctx.fillStyle = '#2a2a2a';
+    roundRect(ctx, 17, -22, 10, 6, 2);
+    ctx.fill();
+    // Camera lens (green for treatment)
+    ctx.fillStyle = '#50c878';
+    ctx.globalAlpha = 0.6 + 0.4 * Math.sin(Date.now() / 400);
+    ctx.beginPath();
+    ctx.arc(22, -19, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // Top rail / payload
+    ctx.fillStyle = '#333';
+    roundRect(ctx, -16, -20, 28, 6, 2);
+    ctx.fill();
+
+    // Antenna
+    ctx.strokeStyle = 'rgba(26,24,20,0.5)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(-6, -20); ctx.lineTo(-6, -28);
+    ctx.stroke();
+    ctx.fillStyle = '#50c878';
+    ctx.globalAlpha = Math.sin(Date.now() / 600) > 0 ? 1.0 : 0.3;
+    ctx.beginPath();
+    ctx.arc(-6, -30, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // Legs
+    const legColor = 'rgba(26,24,20,0.85)';
+    ctx.strokeStyle = legColor;
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    const flSwing = Math.sin(treatLegPhase) * 15;
+    const blSwing = Math.sin(treatLegPhase + Math.PI) * 15;
+    drawLeg(ctx, -14, 8, flSwing, false);
+    drawLeg(ctx, -14, 8, flSwing + 8, true);
+    drawLeg(ctx,  14, 8, blSwing, false);
+    drawLeg(ctx,  14, 8, blSwing + 8, true);
+
+    ctx.restore();
+  }
+
   function drawLeg(ctx, bx, by, swing, back) {
     const s = back ? -1 : 1;
     const angle = (swing * Math.PI) / 180;
@@ -1476,13 +1569,17 @@ revealEls.forEach(el => observer.observe(el));
         currentTarget = pickNextVictim();
         if (currentTarget) {
           spot.walking = true;
-        } else {
-          // All done — idle patrol
-          if (!spot.walking) {
-            spot.tx = 0.1 + Math.random() * 0.8;
-            spot.ty = 0.15 + Math.random() * 0.7;
-            spot.walking = true;
-          }
+        } else if (!allAssessed) {
+          // All victims assessed — stop triage robot, launch treatment robot
+          allAssessed = true;
+          spot.walking = false;
+          treatBot.active = true;
+          // Treatment robot targets the most severe victim (lowest priority number)
+          let worst = null, worstPri = Infinity;
+          victims.forEach(v => {
+            if (v.priority < worstPri) { worst = v; worstPri = v.priority; }
+          });
+          treatTarget = worst;
         }
       }
 
@@ -1511,22 +1608,9 @@ revealEls.forEach(el => observer.observe(el));
           spot.x += (dx / dist) * speed;
           spot.y += (dy / dist) * speed;
         }
-      } else if (spot.tx !== undefined) {
-        const dx = spot.tx - spot.x;
-        const dy = spot.ty - spot.y;
-        const dist = Math.hypot(dx, dy);
-        spot.facingLeft = dx < 0;
-        if (dist < 0.04) {
-          spot.walking = false;
-          spot.tx = undefined;
-        } else {
-          const speed = 0.0012;
-          spot.x += (dx / dist) * speed;
-          spot.y += (dy / dist) * speed;
-        }
       }
 
-      // Record path
+      // Record triage robot path
       if (Math.hypot(spot.x - lastPathRecord.x, spot.y - lastPathRecord.y) > 0.03) {
         pathHistory.push({ x: spot.x, y: spot.y });
         if (pathHistory.length > 60) pathHistory.shift();
@@ -1536,7 +1620,61 @@ revealEls.forEach(el => observer.observe(el));
 
     if (spot.walking) legPhase += 0.12;
 
+    // ── Treatment robot logic ──
+    if (treatBot.active && !treatBot.arrived) {
+      if (treatPauseTimer > 0) {
+        treatPauseTimer--;
+      } else if (treatTarget) {
+        const dx = treatTarget.x - treatBot.x;
+        const dy = treatTarget.y - treatBot.y;
+        const dist = Math.hypot(dx, dy);
+        treatBot.facingLeft = dx < 0;
+        treatBot.walking = true;
+
+        if (dist < 0.04) {
+          treatBot.walking = false;
+          treatBot.arrived = true;
+          // Spawn treatment scan (green rings)
+          for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+              scanAnimations.push({ x: treatTarget.x, y: treatTarget.y, r: 5, alpha: 0.9 });
+            }, i * 300);
+          }
+        } else {
+          const speed = 0.0016;
+          treatBot.x += (dx / dist) * speed;
+          treatBot.y += (dy / dist) * speed;
+        }
+
+        // Record treatment robot path
+        if (treatPathHistory.length === 0 ||
+            Math.hypot(treatBot.x - treatPathHistory[treatPathHistory.length-1].x,
+                        treatBot.y - treatPathHistory[treatPathHistory.length-1].y) > 0.03) {
+          treatPathHistory.push({ x: treatBot.x, y: treatBot.y });
+        }
+      }
+    }
+    if (treatBot.walking) treatLegPhase += 0.12;
+
+    // Draw treatment robot path (blue dashed)
+    if (treatPathHistory.length >= 2) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(74,158,255,0.3)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([3, 8]);
+      ctx.beginPath();
+      ctx.moveTo(treatPathHistory[0].x * W, treatPathHistory[0].y * H);
+      for (let i = 1; i < treatPathHistory.length; i++) {
+        ctx.lineTo(treatPathHistory[i].x * W, treatPathHistory[i].y * H);
+      }
+      ctx.stroke();
+      ctx.restore();
+    }
+
     drawSpot(spot.x * W, spot.y * H);
+
+    // Draw treatment robot if active
+    if (treatBot.active) drawTreatBot(treatBot.x * W, treatBot.y * H);
 
     requestAnimationFrame(loop);
   }
