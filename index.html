@@ -263,7 +263,6 @@ nav {
 
 .badge-darpa { background: var(--blue-light); color: var(--blue); }
 .badge-cmu   { background: var(--accent-light); color: var(--accent); }
-.badge-ndseg { background: var(--green-light); color: var(--green); }
 
 /* ── SECTIONS ── */
 section {
@@ -513,181 +512,6 @@ section {
   letter-spacing: 0.04em;
 }
 
-/* ── rPPG DEMO ── */
-#demo {
-  background: var(--ink);
-  color: var(--cream);
-  padding: 96px 48px;
-}
-
-#demo .section-label { color: rgba(250,248,244,0.3); }
-#demo .section-label::after { background: rgba(250,248,244,0.1); }
-#demo .section-heading { color: var(--cream); }
-#demo .section-sub { color: rgba(250,248,244,0.55); }
-
-.demo-container {
-  max-width: 900px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  align-items: start;
-}
-
-.demo-video-wrap {
-  position: relative;
-  border-radius: 4px;
-  overflow: hidden;
-  background: #0d0c0a;
-  aspect-ratio: 4/3;
-  border: 1px solid rgba(250,248,244,0.1);
-}
-
-#webcam {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scaleX(-1);
-  display: block;
-}
-
-.demo-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-/* Face box */
-#face-box {
-  position: absolute;
-  border: 1.5px solid var(--accent);
-  box-shadow: 0 0 0 1px rgba(200,75,47,0.3);
-  transition: all 0.1s;
-  display: none;
-}
-
-#face-box.visible { display: block; }
-
-/* Corner accents */
-#face-box::before, #face-box::after {
-  content: '';
-  position: absolute;
-  width: 10px; height: 10px;
-}
-
-#face-box::before { top: -2px; left: -2px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
-#face-box::after  { bottom: -2px; right: -2px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); }
-
-.demo-status {
-  position: absolute;
-  top: 12px; left: 12px;
-  font-size: 0.65rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(250,248,244,0.5);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.status-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--ink-faint);
-}
-
-.status-dot.active {
-  background: var(--accent);
-  animation: blink 1s infinite;
-}
-
-@keyframes blink { 50% { opacity: 0.3; } }
-
-.demo-info {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.hr-display {
-  padding: 28px;
-  border: 1px solid rgba(250,248,244,0.1);
-  border-radius: 4px;
-  background: rgba(250,248,244,0.04);
-}
-
-.hr-label {
-  font-size: 0.65rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(250,248,244,0.35);
-  margin-bottom: 8px;
-}
-
-.hr-value {
-  font-family: 'Fraunces', serif;
-  font-size: 3.5rem;
-  font-weight: 300;
-  color: var(--cream);
-  line-height: 1;
-  margin-bottom: 4px;
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-
-.hr-unit {
-  font-size: 1rem;
-  color: rgba(250,248,244,0.3);
-  font-family: 'DM Sans', sans-serif;
-}
-
-.hr-sub {
-  font-size: 0.75rem;
-  color: rgba(250,248,244,0.3);
-}
-
-/* Signal graph */
-.signal-wrap {
-  border: 1px solid rgba(250,248,244,0.08);
-  border-radius: 4px;
-  overflow: hidden;
-  background: rgba(0,0,0,0.3);
-}
-
-#signal-canvas {
-  display: block;
-  width: 100%;
-  height: 80px;
-}
-
-.demo-note {
-  font-size: 0.78rem;
-  color: rgba(250,248,244,0.3);
-  line-height: 1.7;
-}
-
-.demo-note strong { color: rgba(250,248,244,0.6); font-weight: 400; }
-
-.btn-demo {
-  background: var(--accent);
-  color: white;
-  border: none;
-  padding: 12px 28px;
-  font-size: 0.85rem;
-  font-family: 'DM Sans', sans-serif;
-  border-radius: 2px;
-  cursor: pointer;
-  letter-spacing: 0.05em;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.2s;
-}
-
-.btn-demo:hover { background: #b0402a; transform: translateY(-1px); }
-.btn-demo:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-
 /* ── CONTACT ── */
 #contact {
   background: var(--warm-white);
@@ -795,7 +619,6 @@ footer {
   #hero { padding: 100px 24px 60px; }
   .about-grid, .platforms, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
   .projects-grid { grid-template-columns: 1fr 1fr; }
-  .demo-container { grid-template-columns: 1fr; }
   #spot-scene { opacity: 0.4; }
   footer { flex-direction: column; gap: 8px; text-align: center; }
 }
@@ -815,7 +638,6 @@ footer {
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#research">Research</a></li>
-    <li><a href="#demo">Demo</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
@@ -829,14 +651,16 @@ footer {
     <h1 class="hero-name">Cecilia<br><em>Morales</em>, PhD</h1>
     <p class="hero-title">Applied AI & Robotics Research Scientist</p>
     <p class="hero-desc">
-      I build <strong>AI systems that save lives</strong> in mass casualty events —
-      autonomous robots capable of triaging and treating multiple critically injured
-      patients simultaneously, extending the reach of a single first responder.
+      I take <strong>AI systems from the lab to the real world</strong> —
+      building autonomous robots that triage and treat critically injured
+      patients in mass casualty events, validated not just in simulation
+      but on real hardware with real clinical constraints.
     </p>
     <div class="hero-ctas">
       <a href="#research" class="btn btn-primary">View Research</a>
       <a href="#contact" class="btn btn-outline">Get in Touch</a>
       <a href="resume.pdf" class="btn btn-outline" target="_blank">CV / Résumé ↗</a>
+      <a href="https://www.ri.cmu.edu/app/uploads/2025/10/cgmorale_phd_robotics_2025.pdf" class="btn btn-outline" target="_blank">PhD Thesis ↗</a>
     </div>
     <div class="hero-badges">
       <span class="badge badge-darpa">DARPA Triage Challenge</span>
@@ -864,18 +688,21 @@ footer {
       <p>
         At Carnegie Mellon's Robotics Institute, advised by Artur Dubrawski, I developed autonomous robots
         that can assess patient vitals, locate hemorrhage sites, and perform procedural interventions —
-        without waiting for a human to be free.
+        without waiting for a human to be free. Critically, each system was taken
+        <strong>beyond simulation into real-world deployment</strong>: validated on physical robots,
+        tested in animal surgical models, and evaluated under the constraints of actual clinical environments.
       </p>
       <p>
         My philosophy: AI should <strong>extend human expertise</strong>, not replace it.
-        Every system I build is designed around uncertainty quantification, equity across patient
-        populations, and real-time performance on actual hardware — not just in simulation.
+        I focus on bridging the gap between laboratory breakthroughs and field-ready systems —
+        designing around uncertainty quantification, equity across patient populations,
+        and robust performance on real hardware under real conditions.
       </p>
     </div>
     <div class="about-stats reveal" style="transition-delay: 0.15s">
       <div class="stat-card">
         <div class="stat-number">2</div>
-        <div class="stat-label">Autonomous robotic platforms built & validated</div>
+        <div class="stat-label">Autonomous platforms deployed beyond simulation</div>
       </div>
       <div class="stat-card">
         <div class="stat-number">12+</div>
@@ -899,7 +726,7 @@ footer {
     <div class="section-label reveal">Research</div>
     <h2 class="section-heading reveal">Two platforms, <em>one mission</em></h2>
     <p class="section-sub reveal">
-      My dissertation organizes around two autonomous systems,
+      My <a href="https://www.ri.cmu.edu/app/uploads/2025/10/cgmorale_phd_robotics_2025.pdf" target="_blank" style="color:var(--accent);text-decoration:underline">dissertation</a> organizes around two autonomous systems,
       each addressing a critical phase of mass casualty response.
     </p>
 
@@ -1042,64 +869,6 @@ footer {
   </div>
 </section>
 
-<!-- rPPG DEMO -->
-<section id="demo">
-  <div style="max-width:900px;margin:0 auto">
-    <div class="section-label">Live Demo</div>
-    <h2 class="section-heading">PRISM — <em>see it work</em></h2>
-    <p class="section-sub">
-      My rPPG algorithm estimates your heart rate from your webcam — no contact, no wearables.
-      This is the same approach used to assess patient vitals on the triage robot.
-    </p>
-
-    <div class="demo-container">
-      <div>
-        <div class="demo-video-wrap">
-          <video id="webcam" autoplay muted playsinline></video>
-          <div class="demo-overlay">
-            <div id="face-box"></div>
-            <div class="demo-status">
-              <div class="status-dot" id="status-dot"></div>
-              <span id="status-text">Camera off</span>
-            </div>
-          </div>
-        </div>
-        <div style="margin-top:12px">
-          <button class="btn-demo" id="demo-btn" onclick="toggleDemo()">
-            <span id="demo-btn-text">▶ Start Demo</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="demo-info">
-        <div class="hr-display">
-          <div class="hr-label">Estimated Heart Rate</div>
-          <div class="hr-value">
-            <span id="hr-number">—</span>
-            <span class="hr-unit">BPM</span>
-          </div>
-          <div class="hr-sub" id="hr-confidence">Waiting for signal...</div>
-        </div>
-
-        <div class="signal-wrap">
-          <canvas id="signal-canvas" width="400" height="80"></canvas>
-        </div>
-
-        <p class="demo-note">
-          <strong>How it works:</strong> PRISM extracts the photoplethysmographic
-          signal from subtle color changes in your skin. It uses spectral concentration
-          and total variation to adaptively select the optimal signal component —
-          no training required, works in varying lighting conditions.
-        </p>
-
-        <p class="demo-note" style="margin-top:-8px">
-          Video is processed <strong>entirely in your browser</strong>. Nothing is sent to a server.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- CONTACT -->
 <section id="contact">
   <div class="contact-grid">
@@ -1112,8 +881,8 @@ footer {
         medical robotics, embodied AI, or safety-critical autonomous systems.
       </p>
       <p>
-        If you're working on hard problems where AI meets the physical world
-        and the stakes are real, I'd love to talk.
+        If you're working on hard problems that need to move from the lab to the real world —
+        where the stakes are real and the systems must actually work — I'd love to talk.
       </p>
     </div>
     <div class="reveal" style="transition-delay:0.15s">
@@ -1681,485 +1450,6 @@ revealEls.forEach(el => observer.observe(el));
 
   loop();
 })();
-
-
-// ── rPPG DEMO — PRISM + POS ──
-// POS baseline: Wang et al., "Algorithmic Principles of Remote PPG", IEEE TBME 2017
-// PRISM optimization: Whittaker-normalized RGB projection with grid search over (lambda, alpha)
-// POS provides motion-robust BVP; PRISM tries to beat it via spectral concentration.
-let demoActive = false;
-let videoStream = null;
-let animFrame = null;
-
-// Rolling RGB buffers
-let rBuf = [], gBuf = [], bBuf = [];
-let bvpSignal = [];        // BVP waveform from POS (updates every frame)
-let currentHR = null;
-let hrHistory = [];
-
-const videoEl   = document.getElementById('webcam');
-const signalCtx = document.getElementById('signal-canvas').getContext('2d');
-const hrNum     = document.getElementById('hr-number');
-const hrConf    = document.getElementById('hr-confidence');
-const statusDot = document.getElementById('status-dot');
-const statusTxt = document.getElementById('status-text');
-const faceBox   = document.getElementById('face-box');
-const demoBtn   = document.getElementById('demo-btn');
-
-async function toggleDemo() {
-  if (demoActive) { stopDemo(); } else { await startDemo(); }
-}
-
-async function startDemo() {
-  try {
-    videoStream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480, facingMode: 'user' } });
-    videoEl.srcObject = videoStream;
-    demoActive = true;
-    demoBtn.querySelector('#demo-btn-text').textContent = '■ Stop Demo';
-    statusDot.classList.add('active');
-    statusTxt.textContent = 'Warming up...';
-    rBuf = []; gBuf = []; bBuf = [];
-    bvpSignal = [];
-    currentHR = null;
-    hrHistory = [];
-    frameTimestamps = [];
-    lastHRTime = 0;
-    processFrames();
-  } catch (e) {
-    statusTxt.textContent = 'Camera access denied';
-    hrConf.textContent = 'Please allow camera access to try the demo.';
-  }
-}
-
-function stopDemo() {
-  demoActive = false;
-  if (videoStream) videoStream.getTracks().forEach(t => t.stop());
-  if (animFrame) cancelAnimationFrame(animFrame);
-  demoBtn.querySelector('#demo-btn-text').textContent = '▶ Start Demo';
-  statusDot.classList.remove('active');
-  statusTxt.textContent = 'Camera off';
-  hrNum.textContent = '—';
-  hrConf.textContent = 'Waiting for signal...';
-  faceBox.classList.remove('visible');
-}
-
-const offscreen = document.createElement('canvas');
-offscreen.width = 64; offscreen.height = 64;
-const offCtx = offscreen.getContext('2d');
-
-const TARGET_FPS = 15;
-const WINDOW_SECS = 10;
-const WINDOW_SAMPLES = TARGET_FPS * WINDOW_SECS;
-let lastFrameTime = 0;
-let lastHRTime = 0;
-let frameTimestamps = [];
-
-// ── POS (Plane Orthogonal to Skin) ──
-// Extracts BVP signal from RGB traces using overlap-add.
-// The projection plane is orthogonal to the skin-tone vector,
-// which rejects specular reflections (the main source of motion artifacts).
-function posExtractBVP(rArr, gArr, bArr, fs) {
-  const n = rArr.length;
-  const winLen = Math.max(4, Math.round(fs * 1.6)); // 1.6s window per paper
-  if (n < winLen) return new Float64Array(0);
-
-  const bvp = new Float64Array(n);
-  const count = new Float64Array(n); // overlap normalization
-
-  for (let start = 0; start <= n - winLen; start++) {
-    // Temporal normalization: divide by window mean
-    let rM = 0, gM = 0, bM = 0;
-    for (let i = start; i < start + winLen; i++) {
-      rM += rArr[i]; gM += gArr[i]; bM += bArr[i];
-    }
-    rM /= winLen; gM /= winLen; bM /= winLen;
-    if (rM < 1 || gM < 1 || bM < 1) continue;
-
-    // POS projection: S1 = Gn - Bn, S2 = -2Rn + Gn + Bn
-    const s1 = new Float64Array(winLen);
-    const s2 = new Float64Array(winLen);
-    for (let i = 0; i < winLen; i++) {
-      const rn = rArr[start + i] / rM;
-      const gn = gArr[start + i] / gM;
-      const bn = bArr[start + i] / bM;
-      s1[i] = gn - bn;
-      s2[i] = -2 * rn + gn + bn;
-    }
-
-    // Adaptive alpha: std(S1) / std(S2)
-    let m1 = 0, m2 = 0;
-    for (let i = 0; i < winLen; i++) { m1 += s1[i]; m2 += s2[i]; }
-    m1 /= winLen; m2 /= winLen;
-    let v1 = 0, v2 = 0;
-    for (let i = 0; i < winLen; i++) {
-      v1 += (s1[i] - m1) * (s1[i] - m1);
-      v2 += (s2[i] - m2) * (s2[i] - m2);
-    }
-    const alpha = v2 > 1e-10 ? Math.sqrt(v1 / v2) : 1;
-
-    // Overlap-add: h = S1 + alpha * S2
-    for (let i = 0; i < winLen; i++) {
-      bvp[start + i] += (s1[i] - m1) + alpha * (s2[i] - m2);
-      count[start + i]++;
-    }
-  }
-
-  // Normalize by overlap count
-  for (let i = 0; i < n; i++) {
-    if (count[i] > 0) bvp[i] /= count[i];
-  }
-  return bvp;
-}
-
-// ── Whittaker Smoother ──
-// Solves A*s = x where A = I + lam^2 * D2^T*D2 (pentadiagonal SPD system).
-// Returns the smoothed signal s. Used by PRISM for channel normalization.
-function whittakerSmooth(x, lam) {
-  const n = x.length;
-  if (n < 5) return Float64Array.from(x);
-  const l2 = lam * lam;
-  const a = [new Float64Array(n), new Float64Array(n), new Float64Array(n),
-             new Float64Array(n), new Float64Array(n)];
-  // Main diagonal
-  a[2][0] = 1 + l2;  a[2][1] = 1 + l2 * 5;
-  for (let i = 2; i < n - 2; i++) a[2][i] = 1 + l2 * 6;
-  a[2][n - 2] = 1 + l2 * 5;  a[2][n - 1] = 1 + l2;
-  // Off-diagonal +-1
-  for (let i = 0; i < n - 1; i++) {
-    const val = (i === 0 || i === n - 2) ? l2 * (-2) : l2 * (-4);
-    a[3][i] = val;  a[1][i + 1] = val;
-  }
-  // Off-diagonal +-2
-  for (let i = 0; i < n - 2; i++) { a[4][i] = l2; a[0][i + 2] = l2; }
-  // Forward elimination
-  const b = Float64Array.from(x);
-  for (let i = 0; i < n; i++) {
-    const p = a[2][i];
-    if (i + 1 < n) {
-      const m = a[1][i + 1] / p;
-      a[2][i + 1] -= m * a[3][i];
-      if (i + 2 < n) a[3][i + 1] -= m * a[4][i];
-      b[i + 1] -= m * b[i];
-    }
-    if (i + 2 < n) {
-      const m = a[0][i + 2] / p;
-      a[1][i + 2] -= m * a[3][i];
-      a[2][i + 2] -= m * a[4][i];
-      b[i + 2] -= m * b[i];
-    }
-  }
-  // Back substitution
-  const s = new Float64Array(n);
-  for (let i = n - 1; i >= 0; i--) {
-    let v = b[i];
-    if (i + 1 < n) v -= a[3][i] * s[i + 1];
-    if (i + 2 < n) v -= a[4][i] * s[i + 2];
-    s[i] = v / a[2][i];
-  }
-  return s;
-}
-
-// ── PRISM Channel Normalization & Projection ──
-function prismNormalize(channel, lam) {
-  const smoothed = whittakerSmooth(channel, lam);
-  const out = new Float64Array(channel.length);
-  for (let i = 0; i < channel.length; i++) {
-    out[i] = smoothed[i] > 1e-9 ? channel[i] / smoothed[i] : 1;
-  }
-  return out;
-}
-
-function prismProject(rN, gN, bN, alpha) {
-  const n = rN.length;
-  const out = new Float64Array(n);
-  for (let i = 0; i < n; i++) {
-    out[i] = gN[i] - (alpha * bN[i] + (1 - alpha) * rN[i]);
-  }
-  return out;
-}
-
-// Spectral concentration: fraction of power in [fLow, fHigh]
-function spectralConcentration(power, freqRes, fLow, fHigh) {
-  const kLow = Math.max(1, Math.ceil(fLow / freqRes));
-  const kHigh = Math.min(power.length - 1, Math.floor(fHigh / freqRes));
-  let bandPow = 0, totalPow = 0;
-  for (let k = 1; k < power.length; k++) {
-    totalPow += power[k];
-    if (k >= kLow && k <= kHigh) bandPow += power[k];
-  }
-  return totalPow > 0 ? bandPow / totalPow : 0;
-}
-
-// ── PRISM Grid Search (with POS fallback) ──
-// Tries PRISM projections at different (lambda, alpha) AND includes the POS BVP
-// as a candidate. Returns whichever has the best spectral concentration.
-function prismSearch(rRaw, gRaw, bRaw, posBVP, fs) {
-  const HR_BAND = [0.7, 2.5]; // 42–150 BPM — tight band to avoid harmonics
-  const lambdas = [1, 10, 100];
-  const alphas = [0.5, 0.75, 1.0];
-
-  let bestC = -1, bestSig = posBVP, bestMethod = 'POS', bestLam = 0, bestAlpha = 0;
-
-  // Score the POS BVP as baseline
-  const posResult = periodogramPeak(posBVP, fs, HR_BAND[0], HR_BAND[1]);
-  const posC = spectralConcentration(posResult.power, posResult.freqRes, HR_BAND[0], HR_BAND[1]);
-  bestC = posC;
-
-  // Try PRISM candidates
-  for (const lam of lambdas) {
-    const rN = prismNormalize(Float64Array.from(rRaw), lam);
-    const gN = prismNormalize(Float64Array.from(gRaw), lam);
-    const bN = prismNormalize(Float64Array.from(bRaw), lam);
-
-    for (const alpha of alphas) {
-      const sig = prismProject(rN, gN, bN, alpha);
-      const result = periodogramPeak(sig, fs, HR_BAND[0], HR_BAND[1]);
-      const C = spectralConcentration(result.power, result.freqRes, HR_BAND[0], HR_BAND[1]);
-
-      // PRISM must beat POS by a margin to justify switching
-      if (C > bestC + 0.02) {
-        bestC = C;
-        bestSig = sig;
-        bestMethod = 'PRISM';
-        bestLam = lam;
-        bestAlpha = alpha;
-      }
-    }
-  }
-
-  // Estimate HR from winning signal
-  const hr = estimateHR(bestSig, fs);
-  return { hr, signal: bestSig, method: bestMethod, lambda: bestLam, alpha: bestAlpha, concentration: bestC };
-}
-
-// ── Radix-2 FFT ──
-function fft(re, im) {
-  const n = re.length;
-  for (let i = 1, j = 0; i < n; i++) {
-    let bit = n >> 1;
-    while (j & bit) { j ^= bit; bit >>= 1; }
-    j ^= bit;
-    if (i < j) {
-      [re[i], re[j]] = [re[j], re[i]];
-      [im[i], im[j]] = [im[j], im[i]];
-    }
-  }
-  for (let len = 2; len <= n; len <<= 1) {
-    const half = len >> 1;
-    const angle = -2 * Math.PI / len;
-    const wRe = Math.cos(angle), wIm = Math.sin(angle);
-    for (let i = 0; i < n; i += len) {
-      let curRe = 1, curIm = 0;
-      for (let j = 0; j < half; j++) {
-        const tRe = curRe * re[i + j + half] - curIm * im[i + j + half];
-        const tIm = curRe * im[i + j + half] + curIm * re[i + j + half];
-        re[i + j + half] = re[i + j] - tRe;
-        im[i + j + half] = im[i + j] - tIm;
-        re[i + j] += tRe;
-        im[i + j] += tIm;
-        const nextRe = curRe * wRe - curIm * wIm;
-        curIm = curRe * wIm + curIm * wRe;
-        curRe = nextRe;
-      }
-    }
-  }
-}
-
-function nextPow2(n) { let p = 1; while (p < n) p <<= 1; return p; }
-
-// Periodogram peak detection with parabolic interpolation
-function periodogramPeak(signal, fs, fLow, fHigh) {
-  const N = nextPow2(Math.max(signal.length, 256)); // min 256-pt FFT for resolution
-  const re = new Float64Array(N);
-  const im = new Float64Array(N);
-  let mean = 0;
-  for (let i = 0; i < signal.length; i++) mean += signal[i];
-  mean /= signal.length;
-  for (let i = 0; i < signal.length; i++) {
-    re[i] = (signal[i] - mean) * (0.5 - 0.5 * Math.cos(2 * Math.PI * i / (signal.length - 1)));
-  }
-
-  fft(re, im);
-
-  const halfN = N >> 1;
-  const power = new Float64Array(halfN);
-  for (let k = 0; k < halfN; k++) power[k] = re[k] * re[k] + im[k] * im[k];
-
-  const freqRes = fs / N;
-  const kLow = Math.max(1, Math.ceil(fLow / freqRes));
-  const kHigh = Math.min(halfN - 1, Math.floor(fHigh / freqRes));
-
-  let peakK = kLow, peakPow = -1;
-  for (let k = kLow; k <= kHigh; k++) {
-    if (power[k] > peakPow) { peakPow = power[k]; peakK = k; }
-  }
-
-  // Parabolic interpolation for sub-bin accuracy
-  let peakFreq = peakK * freqRes;
-  if (peakK > kLow && peakK < kHigh) {
-    const a = Math.log(power[peakK - 1] + 1e-30);
-    const b = Math.log(power[peakK] + 1e-30);
-    const c = Math.log(power[peakK + 1] + 1e-30);
-    const delta = 0.5 * (a - c) / (a - 2 * b + c);
-    if (Math.abs(delta) < 1) peakFreq = (peakK + delta) * freqRes;
-  }
-
-  return { freqHz: peakFreq, power, freqRes, peakK };
-}
-
-// ── Estimate HR from BVP signal ──
-function estimateHR(bvp, fs) {
-  // Primary detection in [0.7, 3.0] Hz (42–180 BPM)
-  const result = periodogramPeak(bvp, fs, 0.7, 3.0);
-  const detectedHR = result.freqHz * 60;
-
-  // Harmonic check: look for fundamental in [0.7, 1.8] Hz (42–108 BPM)
-  if (detectedHR > 110) {
-    const fundResult = periodogramPeak(bvp, fs, 0.7, 1.8);
-    const fundHR = fundResult.freqHz * 60;
-    const ratio = detectedHR / fundHR;
-    // If detected is ~2× or ~3× a plausible fundamental, use fundamental
-    if (fundHR >= 42 && (Math.abs(ratio - 2) < 0.3 || Math.abs(ratio - 3) < 0.4)) {
-      return fundHR;
-    }
-  }
-
-  return detectedHR;
-}
-
-// ── Frame Processing ──
-function getActualSampleRate() {
-  if (frameTimestamps.length < 10) return TARGET_FPS;
-  const dt = (frameTimestamps[frameTimestamps.length - 1] - frameTimestamps[0]) / 1000;
-  return dt > 0 ? (frameTimestamps.length - 1) / dt : TARGET_FPS;
-}
-
-function processFrames() {
-  if (!demoActive) return;
-  const now = performance.now();
-
-  if (now - lastFrameTime > 1000 / TARGET_FPS) {
-    lastFrameTime = now;
-    frameTimestamps.push(now);
-    while (frameTimestamps.length > 90) frameTimestamps.shift();
-
-    // Draw video frame to offscreen canvas (center crop ~face region)
-    offCtx.drawImage(videoEl, 0, 0, 64, 64);
-    const imgData = offCtx.getImageData(16, 4, 32, 32);
-
-    // Extract mean R, G, B from face ROI
-    let r = 0, g = 0, b = 0, count = 0;
-    for (let i = 0; i < imgData.data.length; i += 4) {
-      r += imgData.data[i];
-      g += imgData.data[i + 1];
-      b += imgData.data[i + 2];
-      count++;
-    }
-    r /= count; g /= count; b /= count;
-
-    if ((r + g + b) / 3 > 10) {
-      rBuf.push(r);
-      gBuf.push(g);
-      bBuf.push(b);
-
-      const vw = videoEl.offsetWidth, vh = videoEl.offsetHeight;
-      faceBox.style.left   = (vw * 0.28) + 'px';
-      faceBox.style.top    = (vh * 0.08) + 'px';
-      faceBox.style.width  = (vw * 0.44) + 'px';
-      faceBox.style.height = (vh * 0.6) + 'px';
-      faceBox.classList.add('visible');
-    }
-
-    while (rBuf.length > WINDOW_SAMPLES) { rBuf.shift(); gBuf.shift(); bBuf.shift(); }
-
-    const actualFs = getActualSampleRate();
-    const posWinLen = Math.round(actualFs * 1.6);
-
-    // Run POS to update BVP signal for display
-    if (rBuf.length >= posWinLen + 2) {
-      bvpSignal = Array.from(posExtractBVP(rBuf, gBuf, bBuf, actualFs));
-    }
-
-    // Run PRISM search every 5 seconds once we have ≥6s of data
-    const minSamples = Math.floor(actualFs * 6);
-    const timeSinceHR = now - lastHRTime;
-
-    if (bvpSignal.length >= minSamples && (lastHRTime === 0 || timeSinceHR > 5000)) {
-      lastHRTime = now;
-      const result = prismSearch(rBuf, gBuf, bBuf, bvpSignal, actualFs);
-
-      if (result.hr > 40 && result.hr < 200) {
-        // If PRISM won, update display signal to PRISM's output
-        if (result.method === 'PRISM') {
-          bvpSignal = Array.from(result.signal);
-        }
-        hrHistory.push(result.hr);
-        if (hrHistory.length > 5) hrHistory.shift();
-        currentHR = Math.round(hrHistory.reduce((a, b) => a + b, 0) / hrHistory.length);
-        hrNum.textContent = currentHR;
-
-        if (result.method === 'PRISM') {
-          statusTxt.textContent = 'PRISM active';
-          hrConf.textContent = '\u03BB=' + result.lambda + ' \u03B1=' + result.alpha.toFixed(2) +
-            ' | C=' + result.concentration.toFixed(2);
-        } else {
-          statusTxt.textContent = 'POS active';
-          hrConf.textContent = 'C=' + result.concentration.toFixed(2) + ' | ' + actualFs.toFixed(1) + ' fps';
-        }
-      }
-    } else if (bvpSignal.length < minSamples) {
-      const pct = rBuf.length >= posWinLen ? Math.round(bvpSignal.length / minSamples * 100) : 0;
-      statusTxt.textContent = 'Warming up... ' + pct + '%';
-    }
-  }
-
-  drawSignal();
-  animFrame = requestAnimationFrame(processFrames);
-}
-
-// ── Signal Visualization ──
-function drawSignal() {
-  const w = document.getElementById('signal-canvas').offsetWidth || 400;
-  const h = 80;
-  document.getElementById('signal-canvas').width = w;
-  signalCtx.clearRect(0, 0, w, h);
-
-  const disp = bvpSignal.length > 2 ? bvpSignal.slice(-150) : [];
-
-  if (disp.length < 2) {
-    signalCtx.fillStyle = 'rgba(250,248,244,0.05)';
-    signalCtx.fillRect(0, 0, w, h);
-    return;
-  }
-
-  const min = Math.min(...disp), max = Math.max(...disp);
-  const range = max - min || 1;
-
-  signalCtx.fillStyle = 'rgba(0,0,0,0.25)';
-  signalCtx.fillRect(0, 0, w, h);
-
-  // Grid line
-  signalCtx.strokeStyle = 'rgba(250,248,244,0.06)';
-  signalCtx.lineWidth = 1;
-  signalCtx.beginPath();
-  signalCtx.moveTo(0, h / 2); signalCtx.lineTo(w, h / 2);
-  signalCtx.stroke();
-
-  // Signal waveform
-  const grad = signalCtx.createLinearGradient(0, 0, 0, h);
-  grad.addColorStop(0, 'rgba(200,75,47,0.9)');
-  grad.addColorStop(1, 'rgba(200,75,47,0.3)');
-
-  signalCtx.strokeStyle = grad;
-  signalCtx.lineWidth = 1.5;
-  signalCtx.beginPath();
-  disp.forEach((v, i) => {
-    const x = (i / (disp.length - 1)) * w;
-    const y = h - ((v - min) / range) * (h - 10) - 5;
-    i === 0 ? signalCtx.moveTo(x, y) : signalCtx.lineTo(x, y);
-  });
-  signalCtx.stroke();
-}
 </script>
 
 </body>
