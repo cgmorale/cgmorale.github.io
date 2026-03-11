@@ -825,8 +825,8 @@ footer {
   <canvas id="hero-canvas"></canvas>
 
   <div class="hero-content">
-    <div class="hero-eyebrow">PhD · Carnegie Mellon University Robotics Institute</div>
-    <h1 class="hero-name">Cecilia<br><em>Morales</em></h1>
+    <div class="hero-eyebrow">Carnegie Mellon University Robotics Institute</div>
+    <h1 class="hero-name">Cecilia<br><em>Morales</em>, PhD</h1>
     <p class="hero-title">Applied AI & Robotics Research Scientist</p>
     <p class="hero-desc">
       I build <strong>AI systems that save lives</strong> in mass casualty events —
@@ -1140,7 +1140,7 @@ footer {
             <div style="font-size:0.78rem;color:var(--ink-faint)">linkedin.com/in/cgmorale</div>
           </div>
         </a>
-        <a href="https://scholar.google.com" target="_blank" class="contact-link">
+        <a href="https://scholar.google.com/citations?user=hZGedsoAAAAJ&hl=en" target="_blank" class="contact-link">
           <div class="contact-link-icon">◎</div>
           <div>
             <div style="font-weight:500;margin-bottom:2px">Google Scholar</div>
@@ -1185,13 +1185,13 @@ revealEls.forEach(el => observer.observe(el));
   // Victims — scattered naturally
   // priority: 0 = immediate (red), 1 = delayed (orange), 2 = minor (green)
   const victims = [
-    { x: 0.18, y: 0.28, triage: '#e87060', priority: 0, assessed: false },
-    { x: 0.55, y: 0.18, triage: '#e8a060', priority: 1, assessed: false },
-    { x: 0.78, y: 0.42, triage: '#e87060', priority: 0, assessed: false },
-    { x: 0.35, y: 0.62, triage: '#a0c890', priority: 2, assessed: false },
-    { x: 0.65, y: 0.72, triage: '#e8a060', priority: 1, assessed: false },
-    { x: 0.88, y: 0.78, triage: '#e87060', priority: 0, assessed: false },
-    { x: 0.22, y: 0.82, triage: '#a0c890', priority: 2, assessed: false },
+    { x: 0.18, y: 0.28, triage: '#e87060', priority: 0, assessed: false, vitals: { hr: 128, spo2: 82, rr: 28 } },
+    { x: 0.55, y: 0.18, triage: '#e8a060', priority: 1, assessed: false, vitals: { hr: 102, spo2: 91, rr: 22 } },
+    { x: 0.78, y: 0.42, triage: '#e87060', priority: 0, assessed: false, vitals: { hr: 135, spo2: 78, rr: 32 } },
+    { x: 0.35, y: 0.62, triage: '#a0c890', priority: 2, assessed: false, vitals: { hr: 76, spo2: 98, rr: 16 } },
+    { x: 0.65, y: 0.72, triage: '#e8a060', priority: 1, assessed: false, vitals: { hr: 110, spo2: 89, rr: 24 } },
+    { x: 0.88, y: 0.78, triage: '#e87060', priority: 0, assessed: false, vitals: { hr: 142, spo2: 75, rr: 34 } },
+    { x: 0.22, y: 0.82, triage: '#a0c890', priority: 2, assessed: false, vitals: { hr: 68, spo2: 97, rr: 14 } },
   ];
 
   // Spot state
@@ -1254,25 +1254,47 @@ revealEls.forEach(el => observer.observe(el));
     ctx.restore();
     ctx.restore();
 
-    // Post-assessment markers
+    // Post-assessment: vitals sign
     if (v.assessed) {
-      if (v.priority === 0) {
-        // Red/immediate: flashing HELP flag
-        const flash = 0.6 + 0.4 * Math.sin(Date.now() / 300);
-        ctx.globalAlpha = flash;
-        ctx.fillStyle = '#cc2222';
-        roundRect(ctx, vx + 12, vy - 22, 34, 16, 3);
-        ctx.fill();
-        ctx.globalAlpha = 1.0;
-        ctx.fillStyle = '#fff';
-        ctx.font = 'bold 9px sans-serif';
-        ctx.fillText('HELP', vx + 15, vy - 10);
-      } else {
-        ctx.globalAlpha = 0.6;
-        ctx.fillStyle = v.triage;
-        ctx.font = '12px sans-serif';
-        ctx.fillText('OK', vx + 14, vy - 10);
-      }
+      const signX = vx + 16;
+      const signY = vy - 38;
+      const signW = 56;
+      const signH = 36;
+
+      // Sign background
+      ctx.globalAlpha = 0.88;
+      ctx.fillStyle = '#1a1814';
+      roundRect(ctx, signX, signY, signW, signH, 4);
+      ctx.fill();
+      ctx.strokeStyle = v.triage;
+      ctx.lineWidth = 1;
+      roundRect(ctx, signX, signY, signW, signH, 4);
+      ctx.stroke();
+
+      // Vitals text
+      ctx.globalAlpha = 1.0;
+      ctx.font = '8px monospace';
+      ctx.textBaseline = 'top';
+
+      // HR line (with tiny heart icon)
+      const hrColor = v.vitals.hr > 120 ? '#e87060' : v.vitals.hr < 50 ? '#e87060' : '#a0c890';
+      ctx.fillStyle = hrColor;
+      const hrBlink = v.priority === 0 ? (0.7 + 0.3 * Math.sin(Date.now() / 250)) : 1;
+      ctx.globalAlpha = hrBlink;
+      ctx.fillText('\u2665 ' + v.vitals.hr, signX + 4, signY + 4);
+
+      // SpO2 line
+      const spColor = v.vitals.spo2 < 90 ? '#e87060' : v.vitals.spo2 < 95 ? '#e8a060' : '#a0c890';
+      ctx.globalAlpha = 1.0;
+      ctx.fillStyle = spColor;
+      ctx.fillText('O\u2082 ' + v.vitals.spo2 + '%', signX + 4, signY + 14);
+
+      // RR line
+      const rrColor = v.vitals.rr > 25 ? '#e8a060' : '#a0c890';
+      ctx.fillStyle = rrColor;
+      ctx.fillText('RR ' + v.vitals.rr, signX + 4, signY + 24);
+
+      ctx.textBaseline = 'alphabetic';
     }
 
     ctx.restore();
@@ -1524,12 +1546,17 @@ revealEls.forEach(el => observer.observe(el));
 })();
 
 
-// ── rPPG DEMO ──
+// ── rPPG DEMO — POS Algorithm ──
+// Wang et al., "Algorithmic Principles of Remote PPG", IEEE TBME 2017
 let demoActive = false;
 let videoStream = null;
-let signalBuffer = [];
-let hrHistory = [];
 let animFrame = null;
+
+// Rolling RGB buffers
+let rBuf = [], gBuf = [], bBuf = [];
+let bvpSignal = [];        // BVP waveform from POS (updates every frame)
+let currentHR = null;
+let hrHistory = [];
 
 const videoEl   = document.getElementById('webcam');
 const signalCtx = document.getElementById('signal-canvas').getContext('2d');
@@ -1541,11 +1568,7 @@ const faceBox   = document.getElementById('face-box');
 const demoBtn   = document.getElementById('demo-btn');
 
 async function toggleDemo() {
-  if (demoActive) {
-    stopDemo();
-  } else {
-    await startDemo();
-  }
+  if (demoActive) { stopDemo(); } else { await startDemo(); }
 }
 
 async function startDemo() {
@@ -1555,9 +1578,13 @@ async function startDemo() {
     demoActive = true;
     demoBtn.querySelector('#demo-btn-text').textContent = '■ Stop Demo';
     statusDot.classList.add('active');
-    statusTxt.textContent = 'Analyzing...';
-    signalBuffer = [];
+    statusTxt.textContent = 'Warming up...';
+    rBuf = []; gBuf = []; bBuf = [];
+    bvpSignal = [];
+    currentHR = null;
     hrHistory = [];
+    frameTimestamps = [];
+    lastHRTime = 0;
     processFrames();
   } catch (e) {
     statusTxt.textContent = 'Camera access denied';
@@ -1577,48 +1604,204 @@ function stopDemo() {
   faceBox.classList.remove('visible');
 }
 
-// Simple rPPG: extract green channel average from face region, bandpass, estimate frequency
 const offscreen = document.createElement('canvas');
 offscreen.width = 64; offscreen.height = 64;
 const offCtx = offscreen.getContext('2d');
 
-const SAMPLE_RATE = 15; // ~15 fps
+const TARGET_FPS = 15;
 const WINDOW_SECS = 10;
-const WINDOW_SAMPLES = SAMPLE_RATE * WINDOW_SECS;
+const WINDOW_SAMPLES = TARGET_FPS * WINDOW_SECS;
 let lastFrameTime = 0;
+let lastHRTime = 0;
+let frameTimestamps = [];
+
+// ── POS (Plane Orthogonal to Skin) ──
+// Extracts BVP signal from RGB traces using overlap-add.
+// The projection plane is orthogonal to the skin-tone vector,
+// which rejects specular reflections (the main source of motion artifacts).
+function posExtractBVP(rArr, gArr, bArr, fs) {
+  const n = rArr.length;
+  const winLen = Math.max(4, Math.round(fs * 1.6)); // 1.6s window per paper
+  if (n < winLen) return new Float64Array(0);
+
+  const bvp = new Float64Array(n);
+  const count = new Float64Array(n); // overlap normalization
+
+  for (let start = 0; start <= n - winLen; start++) {
+    // Temporal normalization: divide by window mean
+    let rM = 0, gM = 0, bM = 0;
+    for (let i = start; i < start + winLen; i++) {
+      rM += rArr[i]; gM += gArr[i]; bM += bArr[i];
+    }
+    rM /= winLen; gM /= winLen; bM /= winLen;
+    if (rM < 1 || gM < 1 || bM < 1) continue;
+
+    // POS projection: S1 = Gn - Bn, S2 = -2Rn + Gn + Bn
+    const s1 = new Float64Array(winLen);
+    const s2 = new Float64Array(winLen);
+    for (let i = 0; i < winLen; i++) {
+      const rn = rArr[start + i] / rM;
+      const gn = gArr[start + i] / gM;
+      const bn = bArr[start + i] / bM;
+      s1[i] = gn - bn;
+      s2[i] = -2 * rn + gn + bn;
+    }
+
+    // Adaptive alpha: std(S1) / std(S2)
+    let m1 = 0, m2 = 0;
+    for (let i = 0; i < winLen; i++) { m1 += s1[i]; m2 += s2[i]; }
+    m1 /= winLen; m2 /= winLen;
+    let v1 = 0, v2 = 0;
+    for (let i = 0; i < winLen; i++) {
+      v1 += (s1[i] - m1) * (s1[i] - m1);
+      v2 += (s2[i] - m2) * (s2[i] - m2);
+    }
+    const alpha = v2 > 1e-10 ? Math.sqrt(v1 / v2) : 1;
+
+    // Overlap-add: h = S1 + alpha * S2
+    for (let i = 0; i < winLen; i++) {
+      bvp[start + i] += (s1[i] - m1) + alpha * (s2[i] - m2);
+      count[start + i]++;
+    }
+  }
+
+  // Normalize by overlap count
+  for (let i = 0; i < n; i++) {
+    if (count[i] > 0) bvp[i] /= count[i];
+  }
+  return bvp;
+}
+
+// ── Radix-2 FFT ──
+function fft(re, im) {
+  const n = re.length;
+  for (let i = 1, j = 0; i < n; i++) {
+    let bit = n >> 1;
+    while (j & bit) { j ^= bit; bit >>= 1; }
+    j ^= bit;
+    if (i < j) {
+      [re[i], re[j]] = [re[j], re[i]];
+      [im[i], im[j]] = [im[j], im[i]];
+    }
+  }
+  for (let len = 2; len <= n; len <<= 1) {
+    const half = len >> 1;
+    const angle = -2 * Math.PI / len;
+    const wRe = Math.cos(angle), wIm = Math.sin(angle);
+    for (let i = 0; i < n; i += len) {
+      let curRe = 1, curIm = 0;
+      for (let j = 0; j < half; j++) {
+        const tRe = curRe * re[i + j + half] - curIm * im[i + j + half];
+        const tIm = curRe * im[i + j + half] + curIm * re[i + j + half];
+        re[i + j + half] = re[i + j] - tRe;
+        im[i + j + half] = im[i + j] - tIm;
+        re[i + j] += tRe;
+        im[i + j] += tIm;
+        const nextRe = curRe * wRe - curIm * wIm;
+        curIm = curRe * wIm + curIm * wRe;
+        curRe = nextRe;
+      }
+    }
+  }
+}
+
+function nextPow2(n) { let p = 1; while (p < n) p <<= 1; return p; }
+
+// Periodogram peak detection with parabolic interpolation
+function periodogramPeak(signal, fs, fLow, fHigh) {
+  const N = nextPow2(Math.max(signal.length, 256)); // min 256-pt FFT for resolution
+  const re = new Float64Array(N);
+  const im = new Float64Array(N);
+  let mean = 0;
+  for (let i = 0; i < signal.length; i++) mean += signal[i];
+  mean /= signal.length;
+  for (let i = 0; i < signal.length; i++) {
+    re[i] = (signal[i] - mean) * (0.5 - 0.5 * Math.cos(2 * Math.PI * i / (signal.length - 1)));
+  }
+
+  fft(re, im);
+
+  const halfN = N >> 1;
+  const power = new Float64Array(halfN);
+  for (let k = 0; k < halfN; k++) power[k] = re[k] * re[k] + im[k] * im[k];
+
+  const freqRes = fs / N;
+  const kLow = Math.max(1, Math.ceil(fLow / freqRes));
+  const kHigh = Math.min(halfN - 1, Math.floor(fHigh / freqRes));
+
+  let peakK = kLow, peakPow = -1;
+  for (let k = kLow; k <= kHigh; k++) {
+    if (power[k] > peakPow) { peakPow = power[k]; peakK = k; }
+  }
+
+  // Parabolic interpolation for sub-bin accuracy
+  let peakFreq = peakK * freqRes;
+  if (peakK > kLow && peakK < kHigh) {
+    const a = Math.log(power[peakK - 1] + 1e-30);
+    const b = Math.log(power[peakK] + 1e-30);
+    const c = Math.log(power[peakK + 1] + 1e-30);
+    const delta = 0.5 * (a - c) / (a - 2 * b + c);
+    if (Math.abs(delta) < 1) peakFreq = (peakK + delta) * freqRes;
+  }
+
+  return { freqHz: peakFreq, power, freqRes, peakK };
+}
+
+// ── Estimate HR from BVP signal ──
+function estimateHR(bvp, fs) {
+  // Primary detection in [0.7, 3.0] Hz (42–180 BPM)
+  const result = periodogramPeak(bvp, fs, 0.7, 3.0);
+  const detectedHR = result.freqHz * 60;
+
+  // Harmonic check: look for fundamental in [0.7, 1.8] Hz (42–108 BPM)
+  if (detectedHR > 110) {
+    const fundResult = periodogramPeak(bvp, fs, 0.7, 1.8);
+    const fundHR = fundResult.freqHz * 60;
+    const ratio = detectedHR / fundHR;
+    // If detected is ~2× or ~3× a plausible fundamental, use fundamental
+    if (fundHR >= 42 && (Math.abs(ratio - 2) < 0.3 || Math.abs(ratio - 3) < 0.4)) {
+      return fundHR;
+    }
+  }
+
+  return detectedHR;
+}
+
+// ── Frame Processing ──
+function getActualSampleRate() {
+  if (frameTimestamps.length < 10) return TARGET_FPS;
+  const dt = (frameTimestamps[frameTimestamps.length - 1] - frameTimestamps[0]) / 1000;
+  return dt > 0 ? (frameTimestamps.length - 1) / dt : TARGET_FPS;
+}
 
 function processFrames() {
   if (!demoActive) return;
   const now = performance.now();
 
-  if (now - lastFrameTime > 1000 / SAMPLE_RATE) {
+  if (now - lastFrameTime > 1000 / TARGET_FPS) {
     lastFrameTime = now;
+    frameTimestamps.push(now);
+    while (frameTimestamps.length > 90) frameTimestamps.shift();
 
     // Draw video frame to offscreen canvas (center crop ~face region)
     offCtx.drawImage(videoEl, 0, 0, 64, 64);
     const imgData = offCtx.getImageData(16, 4, 32, 32);
 
-    // Extract POS-inspired signal: G - (R+B)/2 weighted
-    let r = 0, g = 0, b = 0, n = 0;
+    // Extract mean R, G, B from face ROI
+    let r = 0, g = 0, b = 0, count = 0;
     for (let i = 0; i < imgData.data.length; i += 4) {
       r += imgData.data[i];
-      g += imgData.data[i+1];
-      b += imgData.data[i+2];
-      n++;
+      g += imgData.data[i + 1];
+      b += imgData.data[i + 2];
+      count++;
     }
-    r /= n; g /= n; b /= n;
+    r /= count; g /= count; b /= count;
 
-    // Normalize channels
-    const totalMean = (r + g + b) / 3;
-    if (totalMean > 10) {
-      const rn = r / totalMean;
-      const gn = g / totalMean;
-      const bn = b / totalMean;
-      // POS projection
-      const s = gn - rn * 0.7 + bn * 0.1;
-      signalBuffer.push(s);
+    if ((r + g + b) / 3 > 10) {
+      rBuf.push(r);
+      gBuf.push(g);
+      bBuf.push(b);
 
-      // Simulated face box
       const vw = videoEl.offsetWidth, vh = videoEl.offsetHeight;
       faceBox.style.left   = (vw * 0.28) + 'px';
       faceBox.style.top    = (vh * 0.08) + 'px';
@@ -1627,19 +1810,35 @@ function processFrames() {
       faceBox.classList.add('visible');
     }
 
-    if (signalBuffer.length > WINDOW_SAMPLES) signalBuffer.shift();
+    while (rBuf.length > WINDOW_SAMPLES) { rBuf.shift(); gBuf.shift(); bBuf.shift(); }
 
-    // Estimate HR every 30 frames
-    if (signalBuffer.length >= SAMPLE_RATE * 5 && signalBuffer.length % 10 === 0) {
-      const hr = estimateHR(signalBuffer, SAMPLE_RATE);
-      if (hr) {
+    const actualFs = getActualSampleRate();
+    const posWinLen = Math.round(actualFs * 1.6);
+
+    // Run POS to update BVP signal for display
+    if (rBuf.length >= posWinLen + 2) {
+      bvpSignal = Array.from(posExtractBVP(rBuf, gBuf, bBuf, actualFs));
+    }
+
+    // Estimate HR every 3 seconds once we have ≥6s of data
+    const minSamples = Math.floor(actualFs * 6);
+    const timeSinceHR = now - lastHRTime;
+
+    if (bvpSignal.length >= minSamples && (lastHRTime === 0 || timeSinceHR > 3000)) {
+      lastHRTime = now;
+      const hr = estimateHR(bvpSignal, actualFs);
+
+      if (hr > 40 && hr < 200) {
         hrHistory.push(hr);
         if (hrHistory.length > 5) hrHistory.shift();
-        const smoothHr = Math.round(hrHistory.reduce((a,b)=>a+b,0) / hrHistory.length);
-        hrNum.textContent = smoothHr;
-        const quality = signalBuffer.length > SAMPLE_RATE * 8 ? 'Good signal quality' : 'Warming up...';
-        hrConf.textContent = quality;
+        currentHR = Math.round(hrHistory.reduce((a, b) => a + b, 0) / hrHistory.length);
+        hrNum.textContent = currentHR;
+        statusTxt.textContent = 'POS active';
+        hrConf.textContent = actualFs.toFixed(1) + ' fps | ' + rBuf.length + ' samples';
       }
+    } else if (bvpSignal.length < minSamples) {
+      const pct = rBuf.length >= posWinLen ? Math.round(bvpSignal.length / minSamples * 100) : 0;
+      statusTxt.textContent = 'Warming up... ' + pct + '%';
     }
   }
 
@@ -1647,39 +1846,21 @@ function processFrames() {
   animFrame = requestAnimationFrame(processFrames);
 }
 
-function estimateHR(signal, fs) {
-  // Simple autocorrelation-based HR estimation
-  const n = signal.length;
-  const mean = signal.reduce((a,b)=>a+b,0)/n;
-  const centered = signal.map(v=>v-mean);
-
-  // Bandpass: only consider lags corresponding to 45–180 BPM
-  const lagMin = Math.floor(fs * 60 / 180);
-  const lagMax = Math.ceil(fs * 60 / 45);
-
-  let bestLag = lagMin, bestCorr = -Infinity;
-  for (let lag = lagMin; lag <= Math.min(lagMax, n-1); lag++) {
-    let corr = 0;
-    for (let i = 0; i < n - lag; i++) corr += centered[i] * centered[i + lag];
-    if (corr > bestCorr) { bestCorr = corr; bestLag = lag; }
-  }
-
-  return Math.round(60 / (bestLag / fs));
-}
-
+// ── Signal Visualization ──
 function drawSignal() {
   const w = document.getElementById('signal-canvas').offsetWidth || 400;
   const h = 80;
   document.getElementById('signal-canvas').width = w;
   signalCtx.clearRect(0, 0, w, h);
 
-  if (signalBuffer.length < 2) {
+  const disp = bvpSignal.length > 2 ? bvpSignal.slice(-150) : [];
+
+  if (disp.length < 2) {
     signalCtx.fillStyle = 'rgba(250,248,244,0.05)';
     signalCtx.fillRect(0, 0, w, h);
     return;
   }
 
-  const disp = signalBuffer.slice(-150);
   const min = Math.min(...disp), max = Math.max(...disp);
   const range = max - min || 1;
 
@@ -1690,10 +1871,10 @@ function drawSignal() {
   signalCtx.strokeStyle = 'rgba(250,248,244,0.06)';
   signalCtx.lineWidth = 1;
   signalCtx.beginPath();
-  signalCtx.moveTo(0, h/2); signalCtx.lineTo(w, h/2);
+  signalCtx.moveTo(0, h / 2); signalCtx.lineTo(w, h / 2);
   signalCtx.stroke();
 
-  // Signal
+  // Signal waveform
   const grad = signalCtx.createLinearGradient(0, 0, 0, h);
   grad.addColorStop(0, 'rgba(200,75,47,0.9)');
   grad.addColorStop(1, 'rgba(200,75,47,0.3)');
