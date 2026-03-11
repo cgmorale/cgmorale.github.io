@@ -1683,8 +1683,10 @@ revealEls.forEach(el => observer.observe(el));
 })();
 
 
-// ── rPPG DEMO — POS Algorithm ──
-// Wang et al., "Algorithmic Principles of Remote PPG", IEEE TBME 2017
+// ── rPPG DEMO — PRISM + POS ──
+// POS baseline: Wang et al., "Algorithmic Principles of Remote PPG", IEEE TBME 2017
+// PRISM optimization: Whittaker-normalized RGB projection with grid search over (lambda, alpha)
+// POS provides motion-robust BVP; PRISM tries to beat it via spectral concentration.
 let demoActive = false;
 let videoStream = null;
 let animFrame = null;
@@ -1807,6 +1809,127 @@ function posExtractBVP(rArr, gArr, bArr, fs) {
     if (count[i] > 0) bvp[i] /= count[i];
   }
   return bvp;
+}
+
+// ── Whittaker Smoother ──
+// Solves A*s = x where A = I + lam^2 * D2^T*D2 (pentadiagonal SPD system).
+// Returns the smoothed signal s. Used by PRISM for channel normalization.
+function whittakerSmooth(x, lam) {
+  const n = x.length;
+  if (n < 5) return Float64Array.from(x);
+  const l2 = lam * lam;
+  const a = [new Float64Array(n), new Float64Array(n), new Float64Array(n),
+             new Float64Array(n), new Float64Array(n)];
+  // Main diagonal
+  a[2][0] = 1 + l2;  a[2][1] = 1 + l2 * 5;
+  for (let i = 2; i < n - 2; i++) a[2][i] = 1 + l2 * 6;
+  a[2][n - 2] = 1 + l2 * 5;  a[2][n - 1] = 1 + l2;
+  // Off-diagonal +-1
+  for (let i = 0; i < n - 1; i++) {
+    const val = (i === 0 || i === n - 2) ? l2 * (-2) : l2 * (-4);
+    a[3][i] = val;  a[1][i + 1] = val;
+  }
+  // Off-diagonal +-2
+  for (let i = 0; i < n - 2; i++) { a[4][i] = l2; a[0][i + 2] = l2; }
+  // Forward elimination
+  const b = Float64Array.from(x);
+  for (let i = 0; i < n; i++) {
+    const p = a[2][i];
+    if (i + 1 < n) {
+      const m = a[1][i + 1] / p;
+      a[2][i + 1] -= m * a[3][i];
+      if (i + 2 < n) a[3][i + 1] -= m * a[4][i];
+      b[i + 1] -= m * b[i];
+    }
+    if (i + 2 < n) {
+      const m = a[0][i + 2] / p;
+      a[1][i + 2] -= m * a[3][i];
+      a[2][i + 2] -= m * a[4][i];
+      b[i + 2] -= m * b[i];
+    }
+  }
+  // Back substitution
+  const s = new Float64Array(n);
+  for (let i = n - 1; i >= 0; i--) {
+    let v = b[i];
+    if (i + 1 < n) v -= a[3][i] * s[i + 1];
+    if (i + 2 < n) v -= a[4][i] * s[i + 2];
+    s[i] = v / a[2][i];
+  }
+  return s;
+}
+
+// ── PRISM Channel Normalization & Projection ──
+function prismNormalize(channel, lam) {
+  const smoothed = whittakerSmooth(channel, lam);
+  const out = new Float64Array(channel.length);
+  for (let i = 0; i < channel.length; i++) {
+    out[i] = smoothed[i] > 1e-9 ? channel[i] / smoothed[i] : 1;
+  }
+  return out;
+}
+
+function prismProject(rN, gN, bN, alpha) {
+  const n = rN.length;
+  const out = new Float64Array(n);
+  for (let i = 0; i < n; i++) {
+    out[i] = gN[i] - (alpha * bN[i] + (1 - alpha) * rN[i]);
+  }
+  return out;
+}
+
+// Spectral concentration: fraction of power in [fLow, fHigh]
+function spectralConcentration(power, freqRes, fLow, fHigh) {
+  const kLow = Math.max(1, Math.ceil(fLow / freqRes));
+  const kHigh = Math.min(power.length - 1, Math.floor(fHigh / freqRes));
+  let bandPow = 0, totalPow = 0;
+  for (let k = 1; k < power.length; k++) {
+    totalPow += power[k];
+    if (k >= kLow && k <= kHigh) bandPow += power[k];
+  }
+  return totalPow > 0 ? bandPow / totalPow : 0;
+}
+
+// ── PRISM Grid Search (with POS fallback) ──
+// Tries PRISM projections at different (lambda, alpha) AND includes the POS BVP
+// as a candidate. Returns whichever has the best spectral concentration.
+function prismSearch(rRaw, gRaw, bRaw, posBVP, fs) {
+  const HR_BAND = [0.7, 2.5]; // 42–150 BPM — tight band to avoid harmonics
+  const lambdas = [1, 10, 100];
+  const alphas = [0.5, 0.75, 1.0];
+
+  let bestC = -1, bestSig = posBVP, bestMethod = 'POS', bestLam = 0, bestAlpha = 0;
+
+  // Score the POS BVP as baseline
+  const posResult = periodogramPeak(posBVP, fs, HR_BAND[0], HR_BAND[1]);
+  const posC = spectralConcentration(posResult.power, posResult.freqRes, HR_BAND[0], HR_BAND[1]);
+  bestC = posC;
+
+  // Try PRISM candidates
+  for (const lam of lambdas) {
+    const rN = prismNormalize(Float64Array.from(rRaw), lam);
+    const gN = prismNormalize(Float64Array.from(gRaw), lam);
+    const bN = prismNormalize(Float64Array.from(bRaw), lam);
+
+    for (const alpha of alphas) {
+      const sig = prismProject(rN, gN, bN, alpha);
+      const result = periodogramPeak(sig, fs, HR_BAND[0], HR_BAND[1]);
+      const C = spectralConcentration(result.power, result.freqRes, HR_BAND[0], HR_BAND[1]);
+
+      // PRISM must beat POS by a margin to justify switching
+      if (C > bestC + 0.02) {
+        bestC = C;
+        bestSig = sig;
+        bestMethod = 'PRISM';
+        bestLam = lam;
+        bestAlpha = alpha;
+      }
+    }
+  }
+
+  // Estimate HR from winning signal
+  const hr = estimateHR(bestSig, fs);
+  return { hr, signal: bestSig, method: bestMethod, lambda: bestLam, alpha: bestAlpha, concentration: bestC };
 }
 
 // ── Radix-2 FFT ──
@@ -1957,21 +2080,32 @@ function processFrames() {
       bvpSignal = Array.from(posExtractBVP(rBuf, gBuf, bBuf, actualFs));
     }
 
-    // Estimate HR every 3 seconds once we have ≥6s of data
+    // Run PRISM search every 5 seconds once we have ≥6s of data
     const minSamples = Math.floor(actualFs * 6);
     const timeSinceHR = now - lastHRTime;
 
-    if (bvpSignal.length >= minSamples && (lastHRTime === 0 || timeSinceHR > 3000)) {
+    if (bvpSignal.length >= minSamples && (lastHRTime === 0 || timeSinceHR > 5000)) {
       lastHRTime = now;
-      const hr = estimateHR(bvpSignal, actualFs);
+      const result = prismSearch(rBuf, gBuf, bBuf, bvpSignal, actualFs);
 
-      if (hr > 40 && hr < 200) {
-        hrHistory.push(hr);
+      if (result.hr > 40 && result.hr < 200) {
+        // If PRISM won, update display signal to PRISM's output
+        if (result.method === 'PRISM') {
+          bvpSignal = Array.from(result.signal);
+        }
+        hrHistory.push(result.hr);
         if (hrHistory.length > 5) hrHistory.shift();
         currentHR = Math.round(hrHistory.reduce((a, b) => a + b, 0) / hrHistory.length);
         hrNum.textContent = currentHR;
-        statusTxt.textContent = 'POS active';
-        hrConf.textContent = actualFs.toFixed(1) + ' fps | ' + rBuf.length + ' samples';
+
+        if (result.method === 'PRISM') {
+          statusTxt.textContent = 'PRISM active';
+          hrConf.textContent = '\u03BB=' + result.lambda + ' \u03B1=' + result.alpha.toFixed(2) +
+            ' | C=' + result.concentration.toFixed(2);
+        } else {
+          statusTxt.textContent = 'POS active';
+          hrConf.textContent = 'C=' + result.concentration.toFixed(2) + ' | ' + actualFs.toFixed(1) + ' fps';
+        }
       }
     } else if (bvpSignal.length < minSamples) {
       const pct = rBuf.length >= posWinLen ? Math.round(bvpSignal.length / minSamples * 100) : 0;
