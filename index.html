@@ -512,6 +512,117 @@ section {
   letter-spacing: 0.04em;
 }
 
+.project-result {
+  font-size: 0.82rem;
+  color: var(--ink-light);
+  line-height: 1.6;
+  margin-bottom: 16px;
+  padding: 8px 12px;
+  background: var(--warm-white);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 2px 2px 0;
+}
+
+.project-result strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* ── PUBLICATIONS ── */
+#publications {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.pub-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pub-item {
+  padding: 24px 28px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: white;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.pub-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.pub-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: 1.05rem;
+  color: var(--ink);
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.pub-authors {
+  font-size: 0.85rem;
+  color: var(--ink-light);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.pub-venue {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 2px;
+}
+
+.pub-venue.venue-icra { background: var(--blue-light); color: var(--blue); }
+.pub-venue.venue-neurips { background: var(--accent-light); color: var(--accent); }
+.pub-venue.venue-hamlyn { background: var(--green-light); color: var(--green); }
+.pub-venue.venue-review { background: var(--amber-light); color: var(--amber); }
+
+/* ── FUNDING BADGES ── */
+.funding-section {
+  margin-top: 40px;
+}
+
+.funding-label {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 14px;
+}
+
+.funding-badges {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.funding-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  border-radius: 20px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  color: var(--ink-light);
+}
+
+.funding-badge strong {
+  font-weight: 500;
+  color: var(--ink);
+}
+
 /* ── CONTACT ── */
 #contact {
   background: var(--warm-white);
@@ -621,6 +732,7 @@ footer {
   .projects-grid { grid-template-columns: 1fr 1fr; }
   #spot-scene { opacity: 0.4; }
   footer { flex-direction: column; gap: 8px; text-align: center; }
+  .funding-badges { gap: 8px; }
 }
 
 @media (max-width: 600px) {
@@ -638,6 +750,7 @@ footer {
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#research">Research</a></li>
+    <li><a href="#publications">Publications</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
@@ -701,20 +814,29 @@ footer {
     </div>
     <div class="about-stats reveal" style="transition-delay: 0.15s">
       <div class="stat-card">
-        <div class="stat-number">2</div>
-        <div class="stat-label">Autonomous platforms deployed beyond simulation</div>
+        <div class="stat-number">3.8x</div>
+        <div class="stat-label">Improvement in triage accuracy with Bayesian reasoning</div>
       </div>
       <div class="stat-card">
         <div class="stat-number">12+</div>
         <div class="stat-label">Benchmark methods outperformed by PRISM</div>
       </div>
       <div class="stat-card">
-        <div class="stat-number">4</div>
-        <div class="stat-label">Public datasets used + 1 novel dataset released</div>
+        <div class="stat-number">0.78 bpm</div>
+        <div class="stat-label">Mean absolute error on PURE heart rate benchmark</div>
       </div>
       <div class="stat-card">
         <div class="stat-number">In vivo</div>
         <div class="stat-label">Animal validation on real surgical hardware</div>
+      </div>
+    </div>
+    <div class="funding-section reveal" style="grid-column: 1 / -1; transition-delay: 0.25s">
+      <div class="funding-label">Supported by</div>
+      <div class="funding-badges">
+        <span class="funding-badge"><strong>Uber</strong> Presidential Fellowship</span>
+        <span class="funding-badge"><strong>DARPA</strong> HR00112420329</span>
+        <span class="funding-badge"><strong>NSF</strong> 2427948 &amp; 2406231</span>
+        <span class="funding-badge"><strong>U.S. Dept. of Defense</strong></span>
       </div>
     </div>
   </div>
@@ -766,6 +888,9 @@ footer {
           Outperforms 12 state-of-the-art methods across 4 datasets, including
           the novel NATURE outdoor benchmark I collected and released.
         </p>
+        <div class="project-result">
+          Achieves <strong>0.78 bpm MAE on PURE</strong> — outperforms 12 methods including supervised approaches, with zero training data.
+        </div>
         <div class="project-chips">
           <span class="chip">Python</span>
           <span class="chip">Signal Processing</span>
@@ -785,6 +910,9 @@ footer {
           real-world scans. Designed for data-scarce surgical robotics settings
           with limited labeled training examples.
         </p>
+        <div class="project-result">
+          <strong>Statistically significant improvement</strong> over non-augmented baselines on in vivo animal data.
+        </div>
         <div class="project-chips">
           <span class="chip">PyTorch</span>
           <span class="chip">Ultrasound</span>
@@ -803,6 +931,9 @@ footer {
           predictions. Critical for deployable AI in high-stakes medical decisions
           with limited training data.
         </p>
+        <div class="project-result">
+          <strong>27.7% improvement in Dice score</strong> over Monte Carlo U-Nets, with 75–175x faster uncertainty computation.
+        </div>
         <div class="project-chips">
           <span class="chip">Bayesian Deep Learning</span>
           <span class="chip">Segmentation</span>
@@ -821,6 +952,9 @@ footer {
           cannulation. Validated on in vivo animal data under real surgical
           conditions.
         </p>
+        <div class="project-result">
+          <strong>Expert-level bifurcation detection</strong> — largest real-world validation of any ML approach for US-guided femoral cannulation.
+        </div>
         <div class="project-chips">
           <span class="chip">Computer Vision</span>
           <span class="chip">Ultrasound</span>
@@ -839,6 +973,9 @@ footer {
           decision-making by grounding probabilistic inference in structured
           medical domain knowledge.
         </p>
+        <div class="project-result">
+          Triage accuracy from <strong>14% to 53%</strong>. Diagnostic coverage from <strong>31% to 95%</strong>. Inference in <strong>&lt;1ms</strong> on edge hardware.
+        </div>
         <div class="project-chips">
           <span class="chip">Bayesian Networks</span>
           <span class="chip">ROS2</span>
@@ -857,12 +994,54 @@ footer {
           Built for deployment on actual robotic hardware with hard latency
           constraints.
         </p>
+        <div class="project-result">
+          KF-inspired block achieves <strong>best precision and needle tip error</strong> across all encoder architectures tested.
+        </div>
         <div class="project-chips">
           <span class="chip">ROS2</span>
           <span class="chip">3D Reconstruction</span>
           <span class="chip">Real-Time</span>
           <span class="chip">Hardware</span>
         </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="section-label reveal">Publications</div>
+    <h2 class="section-heading reveal">Peer-reviewed <em>contributions</em></h2>
+    <p class="section-sub reveal">
+      Selected publications from my doctoral research on autonomous medical robotics.
+    </p>
+
+    <div class="pub-list">
+
+      <div class="pub-item reveal">
+        <div class="pub-title">A Bayesian Reasoning Framework for Robotic Systems in Autonomous Casualty Triage</div>
+        <div class="pub-authors">Rusiecki, Morales, Dubrawski</div>
+        <span class="pub-venue venue-icra">ICRA 2026</span>
+      </div>
+
+      <div class="pub-item reveal" style="transition-delay:0.05s">
+        <div class="pub-title">Multimodal Bayesian Network for Robust Assessment of Casualty in Autonomous Triage</div>
+        <div class="pub-authors">Rusiecki, Morales, Dubrawski</div>
+        <span class="pub-venue venue-neurips">NeurIPS 2025 Workshop — Structured Probabilistic Inference &amp; Generative Modeling</span>
+      </div>
+
+      <div class="pub-item reveal" style="transition-delay:0.1s">
+        <div class="pub-title">PRISM: Training-Free Adaptive rPPG Estimation in Challenging Outdoor Environments</div>
+        <div class="pub-authors">Morales, Dubrawski</div>
+        <span class="pub-venue venue-review">Under Review</span>
+      </div>
+
+      <div class="pub-item reveal" style="transition-delay:0.15s">
+        <div class="pub-title">Automatic Cannulation of Femoral Vessels in a Porcine Shock Model</div>
+        <div class="pub-authors">Zevallos, Morales, Orekhov, Rane, Gomez, Guyette, Pinsky, Galeotti, Dubrawski, Choset</div>
+        <span class="pub-venue venue-hamlyn">Hamlyn Symposium on Medical Robotics 2025</span>
       </div>
 
     </div>
@@ -952,23 +1131,42 @@ revealEls.forEach(el => observer.observe(el));
 
   // Victims — scattered naturally
   // priority: 0 = immediate (red), 1 = delayed (orange), 2 = minor (green)
+  // colorRevealed: drone reveals triage color; assessed: Spot shows vitals
   const victims = [
-    { x: 0.18, y: 0.28, triage: '#e87060', priority: 0, assessed: false, vitals: { hr: 128, spo2: 82, rr: 28 } },
-    { x: 0.55, y: 0.18, triage: '#e8a060', priority: 1, assessed: false, vitals: { hr: 102, spo2: 91, rr: 22 } },
-    { x: 0.78, y: 0.42, triage: '#e87060', priority: 0, assessed: false, vitals: { hr: 135, spo2: 78, rr: 32 } },
-    { x: 0.35, y: 0.62, triage: '#a0c890', priority: 2, assessed: false, vitals: { hr: 76, spo2: 98, rr: 16 } },
-    { x: 0.65, y: 0.72, triage: '#e8a060', priority: 1, assessed: false, vitals: { hr: 110, spo2: 89, rr: 24 } },
-    { x: 0.88, y: 0.78, triage: '#e87060', priority: 0, assessed: false, vitals: { hr: 142, spo2: 75, rr: 34 } },
-    { x: 0.22, y: 0.82, triage: '#a0c890', priority: 2, assessed: false, vitals: { hr: 68, spo2: 97, rr: 14 } },
+    { x: 0.18, y: 0.28, triage: '#e87060', priority: 0, colorRevealed: false, assessed: false, revealProgress: 0, vitals: { hr: 128, spo2: 82, rr: 28 } },
+    { x: 0.55, y: 0.18, triage: '#e8a060', priority: 1, colorRevealed: false, assessed: false, revealProgress: 0, vitals: { hr: 102, spo2: 91, rr: 22 } },
+    { x: 0.78, y: 0.42, triage: '#e87060', priority: 0, colorRevealed: false, assessed: false, revealProgress: 0, vitals: { hr: 135, spo2: 78, rr: 32 } },
+    { x: 0.35, y: 0.62, triage: '#a0c890', priority: 2, colorRevealed: false, assessed: false, revealProgress: 0, vitals: { hr: 76, spo2: 98, rr: 16 } },
+    { x: 0.65, y: 0.72, triage: '#e8a060', priority: 1, colorRevealed: false, assessed: false, revealProgress: 0, vitals: { hr: 110, spo2: 89, rr: 24 } },
+    { x: 0.88, y: 0.78, triage: '#e87060', priority: 0, colorRevealed: false, assessed: false, revealProgress: 0, vitals: { hr: 142, spo2: 75, rr: 34 } },
+    { x: 0.22, y: 0.82, triage: '#a0c890', priority: 2, colorRevealed: false, assessed: false, revealProgress: 0, vitals: { hr: 68, spo2: 97, rr: 14 } },
   ];
 
-  // Spot state (triage robot)
-  let spot = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5, walking: false, facingLeft: false };
+  // ── Drone state — flies over scene first to reveal triage colors ──
+  const droneWaypoints = [
+    { x: -0.08, y: 0.20 },
+    { x: 0.20, y: 0.26 },
+    { x: 0.56, y: 0.16 },
+    { x: 0.80, y: 0.40 },
+    { x: 0.50, y: 0.58 },
+    { x: 0.24, y: 0.75 },
+    { x: 0.55, y: 0.78 },
+    { x: 0.90, y: 0.76 },
+    { x: 1.12, y: 0.55 },
+  ];
+  let drone = { x: droneWaypoints[0].x, y: droneWaypoints[0].y, active: true, wpIdx: 0 };
+  const droneRevealRadius = 0.16;
+  let allRevealed = false;
+  let droneExitTimer = 0;
+
+  // Spot state (triage robot) — enters after drone finishes
+  let spotActive = false;
+  let spot = { x: -0.08, y: 0.5, tx: 0.5, ty: 0.5, walking: false, facingLeft: false };
   let legPhase = 0;
   let pathHistory = [];
   let currentTarget = null;
   let pauseTimer = 0;
-  let scanAnimations = []; // { x, y, r, alpha }
+  let scanAnimations = [];
   let allAssessed = false;
 
   // Treatment robot state — enters after triage is complete
@@ -977,6 +1175,163 @@ revealEls.forEach(el => observer.observe(el));
   let treatTarget = null;
   let treatPauseTimer = 0;
   let treatPathHistory = [];
+
+  // ── Scene background state ──
+  const smokeParticles = [
+    { x: 0.78, y: 0.06, alpha: 0.3, speed: 0.0004, size: 4 },
+    { x: 0.82, y: 0.09, alpha: 0.2, speed: 0.0003, size: 3 },
+    { x: 0.75, y: 0.11, alpha: 0.25, speed: 0.00035, size: 5 },
+  ];
+
+  const debrisChunks = [
+    { x: 0.05, y: 0.45, pts: [[-6,-4],[4,-6],[7,2],[0,5],[-5,3]], color: '#3a3632' },
+    { x: 0.42, y: 0.38, pts: [[-4,-3],[5,-2],[3,4],[-3,4]], color: '#44403a' },
+    { x: 0.60, y: 0.50, pts: [[-5,-2],[3,-5],[6,1],[2,5],[-4,3]], color: '#38342e' },
+    { x: 0.48, y: 0.12, pts: [[-3,-4],[4,-3],[5,3],[-2,4]], color: '#403c36' },
+    { x: 0.15, y: 0.60, pts: [[-4,-3],[6,-2],[4,4],[-5,2]], color: '#3c3834' },
+  ];
+
+  const scorchMarks = [
+    { x: 0.72, y: 0.20, rx: 25, ry: 8 },
+    { x: 0.80, y: 0.16, rx: 18, ry: 6 },
+    { x: 0.68, y: 0.24, rx: 14, ry: 5 },
+  ];
+
+  function drawScene() {
+    // ── Ground gradient — subtle darker band at bottom ──
+    ctx.save();
+    const groundGrad = ctx.createLinearGradient(0, H * 0.7, 0, H);
+    groundGrad.addColorStop(0, 'rgba(26,24,20,0)');
+    groundGrad.addColorStop(1, 'rgba(26,24,20,0.06)');
+    ctx.fillStyle = groundGrad;
+    ctx.fillRect(0, H * 0.7, W, H * 0.3);
+    ctx.restore();
+
+    // ── Scorch marks ──
+    ctx.save();
+    scorchMarks.forEach(s => {
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = '#1a1814';
+      ctx.beginPath();
+      ctx.ellipse(s.x * W, s.y * H, s.rx, s.ry, 0.2, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.restore();
+
+    // ── Debris chunks ──
+    ctx.save();
+    debrisChunks.forEach(d => {
+      ctx.globalAlpha = 0.5;
+      ctx.fillStyle = d.color;
+      ctx.beginPath();
+      const dx = d.x * W, dy = d.y * H;
+      ctx.moveTo(dx + d.pts[0][0], dy + d.pts[0][1]);
+      for (let i = 1; i < d.pts.length; i++) {
+        ctx.lineTo(dx + d.pts[i][0], dy + d.pts[i][1]);
+      }
+      ctx.closePath();
+      ctx.fill();
+    });
+    ctx.restore();
+
+    // ── Crashed plane — upper right area ──
+    ctx.save();
+    const planeX = 0.76 * W;
+    const planeY = 0.10 * H;
+    const tilt = -0.26; // ~15 degrees
+
+    // Fuselage section
+    ctx.save();
+    ctx.translate(planeX, planeY);
+    ctx.rotate(tilt);
+    ctx.globalAlpha = 0.35;
+    // Main fuselage body
+    ctx.fillStyle = '#4a4642';
+    roundRect(ctx, -55, -10, 110, 20, 8);
+    ctx.fill();
+    // Belly stripe
+    ctx.fillStyle = '#6a6660';
+    ctx.fillRect(-45, 2, 90, 5);
+    // Window dots
+    ctx.fillStyle = '#5a5854';
+    ctx.globalAlpha = 0.25;
+    for (let i = 0; i < 6; i++) {
+      ctx.beginPath();
+      ctx.arc(-35 + i * 14, -3, 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    // Jagged break on one end
+    ctx.globalAlpha = 0.35;
+    ctx.fillStyle = '#3a3632';
+    ctx.beginPath();
+    ctx.moveTo(55, -10);
+    ctx.lineTo(62, -6);
+    ctx.lineTo(58, -1);
+    ctx.lineTo(64, 3);
+    ctx.lineTo(60, 7);
+    ctx.lineTo(55, 10);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+
+    // Broken wing stub — sticking out from fuselage
+    ctx.save();
+    ctx.translate(planeX - 15, planeY + 5);
+    ctx.rotate(tilt + 0.3);
+    ctx.globalAlpha = 0.3;
+    ctx.fillStyle = '#4a4642';
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(-35, 18);
+    ctx.lineTo(-30, 22);
+    ctx.lineTo(5, 6);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+
+    // Detached tail section — offset and tilted the other way
+    ctx.save();
+    ctx.translate(planeX + 70, planeY - 8);
+    ctx.rotate(0.35);
+    ctx.globalAlpha = 0.3;
+    ctx.fillStyle = '#4a4642';
+    // Vertical stabilizer
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(-5, -20);
+    ctx.lineTo(8, -18);
+    ctx.lineTo(10, 0);
+    ctx.closePath();
+    ctx.fill();
+    // Horizontal stabilizer
+    ctx.fillRect(-12, -2, 24, 5);
+    ctx.restore();
+
+    ctx.restore();
+
+    // ── Smoke wisps — animated particles from wreckage ──
+    ctx.save();
+    smokeParticles.forEach(p => {
+      // Draw
+      ctx.globalAlpha = p.alpha * 0.5;
+      ctx.fillStyle = '#6a6660';
+      ctx.beginPath();
+      ctx.arc(p.x * W, p.y * H, p.size, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Update — drift up and fade, then respawn
+      p.y -= p.speed;
+      p.alpha -= 0.0015;
+      p.size += 0.02;
+      if (p.alpha <= 0) {
+        p.y = 0.08 + Math.random() * 0.05;
+        p.x = 0.74 + Math.random() * 0.08;
+        p.alpha = 0.2 + Math.random() * 0.15;
+        p.size = 3 + Math.random() * 2;
+      }
+    });
+    ctx.restore();
+  }
 
   function pickNextVictim() {
     // Prioritize by severity (red=0 first), then nearest within same priority
@@ -991,38 +1346,55 @@ revealEls.forEach(el => observer.observe(el));
     return best;
   }
 
+  const neutralColor = '#9a948c';
+
   function drawVictim(v) {
     const vx = v.x * W, vy = v.y * H;
-    const opacity = v.assessed ? 0.4 : 1.0;
     ctx.save();
-    ctx.globalAlpha = opacity;
-    ctx.strokeStyle = v.triage;
-    ctx.fillStyle = v.triage;
+
+    // Color: neutral gray until drone reveals, then lerp to triage color
+    let drawColor = neutralColor;
+    if (v.colorRevealed) {
+      if (v.revealProgress < 1) v.revealProgress = Math.min(1, v.revealProgress + 0.035);
+      drawColor = lerpColor(neutralColor, v.triage, v.revealProgress);
+    }
+
+    ctx.globalAlpha = 1.0;
+    ctx.strokeStyle = drawColor;
+    ctx.fillStyle = drawColor;
     ctx.lineWidth = 1.5;
 
-    // Pulse ring
+    // Pulse ring for unassessed victims (gray pulse before reveal, colored after)
     if (!v.assessed) {
       const pulseR = 10 + 4 * Math.sin(Date.now() / 500);
       ctx.beginPath();
       ctx.arc(vx, vy, pulseR, 0, Math.PI * 2);
       ctx.globalAlpha = 0.15;
       ctx.fill();
-      ctx.globalAlpha = opacity;
+      ctx.globalAlpha = 1.0;
+    }
+
+    // Flash ring when drone reveals color
+    if (v.colorRevealed && v.revealProgress < 1) {
+      const flashR = 8 + 35 * v.revealProgress;
+      ctx.beginPath();
+      ctx.arc(vx, vy, flashR, 0, Math.PI * 2);
+      ctx.globalAlpha = 0.35 * (1 - v.revealProgress);
+      ctx.fillStyle = v.triage;
+      ctx.fill();
+      ctx.globalAlpha = 1.0;
+      ctx.fillStyle = drawColor;
     }
 
     // Lying figure
     ctx.save();
     ctx.translate(vx, vy);
-    // Head
     ctx.beginPath();
     ctx.arc(-12, 0, 4, 0, Math.PI * 2);
     ctx.fill();
-    // Body
     ctx.fillRect(-8, -3, 16, 6);
-    // Legs
     ctx.fillRect(7, -5, 10, 3);
     ctx.fillRect(7, 2, 10, 3);
-    // Arm up
     ctx.save();
     ctx.translate(-2, -3);
     ctx.rotate(-0.5);
@@ -1030,48 +1402,191 @@ revealEls.forEach(el => observer.observe(el));
     ctx.restore();
     ctx.restore();
 
-    // Post-assessment: vitals sign
+    // Post-assessment: vitals sign (shown after Spot assesses)
     if (v.assessed) {
-      const signX = vx + 16;
-      const signY = vy - 38;
-      const signW = 56;
-      const signH = 36;
+      if (v.vitalsAlpha === undefined) v.vitalsAlpha = 0;
+      if (v.vitalsAlpha < 1) v.vitalsAlpha = Math.min(1, v.vitalsAlpha + 0.04);
+      const signAlpha = v.vitalsAlpha;
+      const signX = vx + 18;
+      const signY = vy - 52;
+      const signW = 78;
+      const signH = 52;
 
-      // Sign background
-      ctx.globalAlpha = 0.88;
+      ctx.globalAlpha = 0.92 * signAlpha;
       ctx.fillStyle = '#1a1814';
-      roundRect(ctx, signX, signY, signW, signH, 4);
+      roundRect(ctx, signX, signY, signW, signH, 5);
       ctx.fill();
       ctx.strokeStyle = v.triage;
-      ctx.lineWidth = 1;
-      roundRect(ctx, signX, signY, signW, signH, 4);
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, signX, signY, signW, signH, 5);
       ctx.stroke();
 
-      // Vitals text
-      ctx.globalAlpha = 1.0;
-      ctx.font = '8px monospace';
+      ctx.globalAlpha = signAlpha;
+      ctx.font = '11px monospace';
       ctx.textBaseline = 'top';
 
-      // HR line (with tiny heart icon)
       const hrColor = v.vitals.hr > 120 ? '#e87060' : v.vitals.hr < 50 ? '#e87060' : '#a0c890';
       ctx.fillStyle = hrColor;
       const hrBlink = v.priority === 0 ? (0.7 + 0.3 * Math.sin(Date.now() / 250)) : 1;
-      ctx.globalAlpha = hrBlink;
-      ctx.fillText('\u2665 ' + v.vitals.hr, signX + 4, signY + 4);
+      ctx.globalAlpha = hrBlink * signAlpha;
+      ctx.fillText('\u2665 ' + v.vitals.hr + ' bpm', signX + 6, signY + 6);
 
-      // SpO2 line
       const spColor = v.vitals.spo2 < 90 ? '#e87060' : v.vitals.spo2 < 95 ? '#e8a060' : '#a0c890';
-      ctx.globalAlpha = 1.0;
+      ctx.globalAlpha = signAlpha;
       ctx.fillStyle = spColor;
-      ctx.fillText('O\u2082 ' + v.vitals.spo2 + '%', signX + 4, signY + 14);
+      ctx.fillText('O\u2082 ' + v.vitals.spo2 + '%', signX + 6, signY + 21);
 
-      // RR line
       const rrColor = v.vitals.rr > 25 ? '#e8a060' : '#a0c890';
       ctx.fillStyle = rrColor;
-      ctx.fillText('RR ' + v.vitals.rr, signX + 4, signY + 24);
+      ctx.fillText('RR ' + v.vitals.rr, signX + 6, signY + 36);
 
       ctx.textBaseline = 'alphabetic';
     }
+
+    ctx.restore();
+  }
+
+  // Hex color lerp helper
+  function lerpColor(a, b, t) {
+    const ar = parseInt(a.slice(1,3),16), ag = parseInt(a.slice(3,5),16), ab = parseInt(a.slice(5,7),16);
+    const br = parseInt(b.slice(1,3),16), bg = parseInt(b.slice(3,5),16), bb = parseInt(b.slice(5,7),16);
+    const r = Math.round(ar + (br - ar) * t);
+    const g = Math.round(ag + (bg - ag) * t);
+    const bl = Math.round(ab + (bb - ab) * t);
+    return '#' + ((1<<24)+(r<<16)+(g<<8)+bl).toString(16).slice(1);
+  }
+
+  // ── Drone drawing ──
+  let dronePathHistory = [];
+
+  function drawDronePath() {
+    if (dronePathHistory.length < 2) return;
+    ctx.save();
+    ctx.strokeStyle = 'rgba(74,158,255,0.25)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4, 6]);
+    ctx.beginPath();
+    ctx.moveTo(dronePathHistory[0].x * W, dronePathHistory[0].y * H);
+    for (let i = 1; i < dronePathHistory.length; i++) {
+      ctx.lineTo(dronePathHistory[i].x * W, dronePathHistory[i].y * H);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawDrone(dx, dy) {
+    ctx.save();
+    ctx.translate(dx, dy);
+
+    // Large shadow on ground below
+    ctx.save();
+    ctx.translate(0, 60);
+    ctx.scale(1, 0.3);
+    const shadowG = ctx.createRadialGradient(0, 0, 0, 0, 0, 32);
+    shadowG.addColorStop(0, 'rgba(26,24,20,0.22)');
+    shadowG.addColorStop(1, 'transparent');
+    ctx.fillStyle = shadowG;
+    ctx.beginPath();
+    ctx.arc(0, 0, 32, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Pulsing scan circle underneath (always visible while drone is active)
+    const scanPulse = (Date.now() % 1200) / 1200;
+    ctx.save();
+    ctx.globalAlpha = 0.25 * (1 - scanPulse);
+    ctx.strokeStyle = '#4a9eff';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(0, 45, 8 + scanPulse * 35, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+
+    // Scan cone pointing down
+    ctx.save();
+    ctx.globalAlpha = 0.06 + 0.03 * Math.sin(Date.now() / 200);
+    ctx.fillStyle = '#4a9eff';
+    ctx.beginPath();
+    ctx.moveTo(-5, 8);
+    ctx.lineTo(5, 8);
+    ctx.lineTo(28, 65);
+    ctx.lineTo(-28, 65);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+
+    // Arms (X shape) — large
+    ctx.strokeStyle = '#555';
+    ctx.lineWidth = 3;
+    const armLen = 26;
+    const armAngles = [(-Math.PI/4), (Math.PI/4), (Math.PI*3/4), (-Math.PI*3/4)];
+    const rotorPos = [];
+    armAngles.forEach(a => {
+      const ax = Math.cos(a) * armLen;
+      const ay = Math.sin(a) * armLen * 0.45;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(ax, ay);
+      ctx.stroke();
+      rotorPos.push({ x: ax, y: ay });
+    });
+
+    // Center body — larger
+    ctx.fillStyle = '#2a2a2a';
+    ctx.beginPath();
+    ctx.arc(0, 0, 10, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(26,24,20,0.5)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Accent ring
+    ctx.strokeStyle = '#c84b2f';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(0, 0, 7, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Camera lens underneath
+    ctx.fillStyle = '#4a9eff';
+    ctx.globalAlpha = 0.5 + 0.5 * Math.sin(Date.now() / 250);
+    ctx.beginPath();
+    ctx.arc(0, 5, 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // Rotors (spinning blur discs) — larger
+    const rotorPhase = Date.now() / 20;
+    rotorPos.forEach(rp => {
+      ctx.save();
+      ctx.translate(rp.x, rp.y);
+      // Blur disc
+      ctx.globalAlpha = 0.18;
+      ctx.fillStyle = '#888';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 14, 5, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // Blade lines
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = '#555';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(rotorPhase) * 12, Math.sin(rotorPhase) * 4);
+      ctx.lineTo(Math.cos(rotorPhase + Math.PI) * 12, Math.sin(rotorPhase + Math.PI) * 4);
+      ctx.stroke();
+      // Second blade
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(rotorPhase + Math.PI/2) * 12, Math.sin(rotorPhase + Math.PI/2) * 4);
+      ctx.lineTo(Math.cos(rotorPhase + Math.PI*1.5) * 12, Math.sin(rotorPhase + Math.PI*1.5) * 4);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+      // Hub
+      ctx.fillStyle = '#c84b2f';
+      ctx.beginPath();
+      ctx.arc(0, 0, 3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
 
     ctx.restore();
   }
@@ -1310,7 +1825,62 @@ revealEls.forEach(el => observer.observe(el));
   function loop() {
     ctx.clearRect(0, 0, W, H);
 
-    // Draw path
+    // ── Background scene (plane wreckage, debris, ground) ──
+    drawScene();
+
+    // ── Phase 1: Drone flyover — reveal victim triage colors ──
+    if (drone.active) {
+      const wp = droneWaypoints[drone.wpIdx];
+      const dx = wp.x - drone.x;
+      const dy = wp.y - drone.y;
+      const dist = Math.hypot(dx, dy);
+
+      if (dist < 0.02) {
+        drone.wpIdx++;
+        if (drone.wpIdx >= droneWaypoints.length) {
+          drone.active = false;
+        }
+      } else {
+        const speed = 0.0028;
+        drone.x += (dx / dist) * speed;
+        drone.y += (dy / dist) * speed;
+      }
+
+      // Record drone path
+      if (dronePathHistory.length === 0 ||
+          Math.hypot(drone.x - dronePathHistory[dronePathHistory.length-1].x,
+                      drone.y - dronePathHistory[dronePathHistory.length-1].y) > 0.02) {
+        dronePathHistory.push({ x: drone.x, y: drone.y });
+      }
+
+      // Reveal any victim within radius
+      victims.forEach(v => {
+        if (!v.colorRevealed) {
+          const vd = Math.hypot(drone.x - v.x, drone.y - v.y);
+          if (vd < droneRevealRadius) {
+            v.colorRevealed = true;
+          }
+        }
+      });
+
+      // Check if all revealed
+      if (!allRevealed && victims.every(v => v.colorRevealed)) {
+        allRevealed = true;
+      }
+    }
+
+    // After drone exits and all colors revealed, activate Spot
+    if (!drone.active && allRevealed && !spotActive) {
+      droneExitTimer++;
+      if (droneExitTimer > 40) {
+        spotActive = true;
+      }
+    }
+
+    // Draw drone path trail
+    drawDronePath();
+
+    // Draw Spot path
     drawPath();
 
     // Draw victims
@@ -1330,66 +1900,66 @@ revealEls.forEach(el => observer.observe(el));
       s.alpha -= 0.018;
     });
 
-    // Move spot
-    if (pauseTimer > 0) {
-      pauseTimer--;
-    } else {
-      if (!currentTarget) {
-        currentTarget = pickNextVictim();
-        if (currentTarget) {
-          spot.walking = true;
-        } else if (!allAssessed) {
-          // All victims assessed — stop triage robot, launch treatment robot
-          allAssessed = true;
-          spot.walking = false;
-          treatBot.active = true;
-          // Treatment robot targets the most severe victim (lowest priority number)
-          let worst = null, worstPri = Infinity;
-          victims.forEach(v => {
-            if (v.priority < worstPri) { worst = v; worstPri = v.priority; }
-          });
-          treatTarget = worst;
-        }
-      }
-
-      if (currentTarget) {
-        const dx = currentTarget.x - spot.x;
-        const dy = currentTarget.y - spot.y;
-        const dist = Math.hypot(dx, dy);
-        spot.facingLeft = dx < 0;
-
-        if (dist < 0.04) {
-          // Arrived
-          if (!currentTarget.assessed) {
-            currentTarget.assessed = true;
-            // Spawn scan
-            for (let i = 0; i < 3; i++) {
-              setTimeout(() => {
-                scanAnimations.push({ x: currentTarget.x, y: currentTarget.y, r: 5, alpha: 0.8 });
-              }, i * 200);
-            }
+    // ── Phase 2: Spot triage (only after drone finishes) ──
+    if (spotActive) {
+      if (pauseTimer > 0) {
+        pauseTimer--;
+      } else {
+        if (!currentTarget) {
+          currentTarget = pickNextVictim();
+          if (currentTarget) {
+            spot.walking = true;
+          } else if (!allAssessed) {
+            allAssessed = true;
+            spot.walking = false;
+            treatBot.active = true;
+            let worst = null, worstPri = Infinity;
+            victims.forEach(v => {
+              if (v.priority < worstPri) { worst = v; worstPri = v.priority; }
+            });
+            treatTarget = worst;
           }
-          currentTarget = null;
-          spot.walking = false;
-          pauseTimer = 80;
-        } else {
-          const speed = 0.0018;
-          spot.x += (dx / dist) * speed;
-          spot.y += (dy / dist) * speed;
+        }
+
+        if (currentTarget) {
+          const dx = currentTarget.x - spot.x;
+          const dy = currentTarget.y - spot.y;
+          const dist = Math.hypot(dx, dy);
+          spot.facingLeft = dx < 0;
+
+          if (dist < 0.04) {
+            if (!currentTarget.assessed) {
+              currentTarget.assessed = true;
+              for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                  scanAnimations.push({ x: currentTarget.x, y: currentTarget.y, r: 5, alpha: 0.8 });
+                }, i * 200);
+              }
+            }
+            currentTarget = null;
+            spot.walking = false;
+            pauseTimer = 80;
+          } else {
+            const speed = 0.0018;
+            spot.x += (dx / dist) * speed;
+            spot.y += (dy / dist) * speed;
+          }
+        }
+
+        // Record triage robot path
+        if (Math.hypot(spot.x - lastPathRecord.x, spot.y - lastPathRecord.y) > 0.03) {
+          pathHistory.push({ x: spot.x, y: spot.y });
+          if (pathHistory.length > 60) pathHistory.shift();
+          lastPathRecord = { ...spot };
         }
       }
 
-      // Record triage robot path
-      if (Math.hypot(spot.x - lastPathRecord.x, spot.y - lastPathRecord.y) > 0.03) {
-        pathHistory.push({ x: spot.x, y: spot.y });
-        if (pathHistory.length > 60) pathHistory.shift();
-        lastPathRecord = { ...spot };
-      }
+      if (spot.walking) legPhase += 0.12;
+
+      drawSpot(spot.x * W, spot.y * H);
     }
 
-    if (spot.walking) legPhase += 0.12;
-
-    // ── Treatment robot logic ──
+    // ── Phase 3: Treatment robot ──
     if (treatBot.active && !treatBot.arrived) {
       if (treatPauseTimer > 0) {
         treatPauseTimer--;
@@ -1403,7 +1973,6 @@ revealEls.forEach(el => observer.observe(el));
         if (dist < 0.04) {
           treatBot.walking = false;
           treatBot.arrived = true;
-          // Spawn treatment scan (green rings)
           for (let i = 0; i < 5; i++) {
             setTimeout(() => {
               scanAnimations.push({ x: treatTarget.x, y: treatTarget.y, r: 5, alpha: 0.9 });
@@ -1415,7 +1984,6 @@ revealEls.forEach(el => observer.observe(el));
           treatBot.y += (dy / dist) * speed;
         }
 
-        // Record treatment robot path
         if (treatPathHistory.length === 0 ||
             Math.hypot(treatBot.x - treatPathHistory[treatPathHistory.length-1].x,
                         treatBot.y - treatPathHistory[treatPathHistory.length-1].y) > 0.03) {
@@ -1425,7 +1993,7 @@ revealEls.forEach(el => observer.observe(el));
     }
     if (treatBot.walking) treatLegPhase += 0.12;
 
-    // Draw treatment robot path (blue dashed)
+    // Draw treatment robot path
     if (treatPathHistory.length >= 2) {
       ctx.save();
       ctx.strokeStyle = 'rgba(74,158,255,0.3)';
@@ -1440,10 +2008,10 @@ revealEls.forEach(el => observer.observe(el));
       ctx.restore();
     }
 
-    drawSpot(spot.x * W, spot.y * H);
-
-    // Draw treatment robot if active
     if (treatBot.active) drawTreatBot(treatBot.x * W, treatBot.y * H);
+
+    // Draw drone on top (if still active)
+    if (drone.active) drawDrone(drone.x * W, drone.y * H);
 
     requestAnimationFrame(loop);
   }
