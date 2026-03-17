@@ -1178,42 +1178,145 @@ revealEls.forEach(el => observer.observe(el));
 
   // ── Scene background state ──
   const smokeParticles = [
-    { x: 0.78, y: 0.06, alpha: 0.3, speed: 0.0004, size: 4 },
-    { x: 0.82, y: 0.09, alpha: 0.2, speed: 0.0003, size: 3 },
-    { x: 0.75, y: 0.11, alpha: 0.25, speed: 0.00035, size: 5 },
+    // Plane wreckage smoke (heavier)
+    { x: 0.74, y: 0.04, alpha: 0.4, speed: 0.00045, size: 6, originX: 0.70, originY: 0.06 },
+    { x: 0.80, y: 0.07, alpha: 0.35, speed: 0.0004, size: 5, originX: 0.76, originY: 0.08 },
+    { x: 0.77, y: 0.02, alpha: 0.3, speed: 0.0005, size: 7, originX: 0.73, originY: 0.07 },
+    { x: 0.83, y: 0.05, alpha: 0.25, speed: 0.00035, size: 8, originX: 0.80, originY: 0.09 },
+    { x: 0.71, y: 0.09, alpha: 0.3, speed: 0.00042, size: 5, originX: 0.68, originY: 0.10 },
+    // Fire smoke — darker, from fire sources
+    { x: 0.08, y: 0.40, alpha: 0.25, speed: 0.0003, size: 4, originX: 0.08, originY: 0.44 },
+    { x: 0.50, y: 0.28, alpha: 0.2, speed: 0.00035, size: 3, originX: 0.50, originY: 0.32 },
+    { x: 0.92, y: 0.55, alpha: 0.2, speed: 0.0003, size: 4, originX: 0.92, originY: 0.58 },
+    { x: 0.30, y: 0.44, alpha: 0.18, speed: 0.00032, size: 3, originX: 0.30, originY: 0.48 },
   ];
 
   const debrisChunks = [
-    { x: 0.05, y: 0.45, pts: [[-6,-4],[4,-6],[7,2],[0,5],[-5,3]], color: '#3a3632' },
-    { x: 0.42, y: 0.38, pts: [[-4,-3],[5,-2],[3,4],[-3,4]], color: '#44403a' },
-    { x: 0.60, y: 0.50, pts: [[-5,-2],[3,-5],[6,1],[2,5],[-4,3]], color: '#38342e' },
-    { x: 0.48, y: 0.12, pts: [[-3,-4],[4,-3],[5,3],[-2,4]], color: '#403c36' },
-    { x: 0.15, y: 0.60, pts: [[-4,-3],[6,-2],[4,4],[-5,2]], color: '#3c3834' },
+    // Larger, more dramatic debris
+    { x: 0.05, y: 0.45, pts: [[-9,-6],[6,-8],[10,3],[1,7],[-7,5]], color: '#3a3632' },
+    { x: 0.42, y: 0.35, pts: [[-6,-5],[7,-3],[5,6],[-4,6]], color: '#44403a' },
+    { x: 0.60, y: 0.50, pts: [[-7,-3],[4,-7],[9,2],[3,7],[-6,4]], color: '#38342e' },
+    { x: 0.48, y: 0.10, pts: [[-5,-6],[6,-4],[7,4],[-3,6]], color: '#403c36' },
+    { x: 0.15, y: 0.58, pts: [[-6,-4],[8,-3],[6,5],[-7,3]], color: '#3c3834' },
+    // Extra wreckage pieces flung from the plane
+    { x: 0.55, y: 0.28, pts: [[-8,-3],[3,-6],[8,0],[4,5],[-5,4]], color: '#4a4642' },
+    { x: 0.85, y: 0.35, pts: [[-5,-4],[6,-5],[8,2],[-3,5]], color: '#3e3a34' },
+    { x: 0.32, y: 0.22, pts: [[-4,-3],[5,-4],[6,2],[0,5],[-5,3]], color: '#46423c' },
+    // Seat/luggage shapes
+    { x: 0.68, y: 0.30, pts: [[-4,-5],[4,-5],[5,5],[-5,5]], color: '#3a3836' },
+    { x: 0.38, y: 0.52, pts: [[-3,-4],[5,-3],[4,4],[-4,3]], color: '#42403c' },
   ];
 
   const scorchMarks = [
-    { x: 0.72, y: 0.20, rx: 25, ry: 8 },
-    { x: 0.80, y: 0.16, rx: 18, ry: 6 },
-    { x: 0.68, y: 0.24, rx: 14, ry: 5 },
+    // Near plane — large impact area
+    { x: 0.72, y: 0.22, rx: 40, ry: 12, angle: 0.2 },
+    { x: 0.82, y: 0.18, rx: 28, ry: 9, angle: -0.1 },
+    { x: 0.65, y: 0.26, rx: 22, ry: 8, angle: 0.3 },
+    // Scattered around scene
+    { x: 0.08, y: 0.46, rx: 16, ry: 6, angle: 0.5 },
+    { x: 0.50, y: 0.34, rx: 14, ry: 5, angle: -0.2 },
+    { x: 0.30, y: 0.50, rx: 12, ry: 5, angle: 0.1 },
+    { x: 0.92, y: 0.60, rx: 15, ry: 6, angle: -0.3 },
   ];
 
-  function drawScene() {
-    // ── Ground gradient — subtle darker band at bottom ──
+  // Fire sources — flickering animated fires at various points
+  const fires = [
+    { x: 0.74, y: 0.14, size: 1.4 },   // at the plane wreckage
+    { x: 0.80, y: 0.12, size: 1.0 },   // plane wreckage secondary
+    { x: 0.08, y: 0.44, size: 0.8 },   // scattered fire left
+    { x: 0.50, y: 0.32, size: 0.7 },   // center fire
+    { x: 0.92, y: 0.58, size: 0.6 },   // right side fire
+    { x: 0.30, y: 0.48, size: 0.5 },   // left-center small fire
+    { x: 0.68, y: 0.25, size: 0.6 },   // near debris
+  ];
+
+  function drawFire(fx, fy, size) {
+    const t = Date.now();
+    const flicker = 0.8 + 0.2 * Math.sin(t / 80 + fx * 100);
+    const flicker2 = 0.7 + 0.3 * Math.sin(t / 120 + fy * 80);
+    const baseR = 6 * size;
+
+    // Outer glow
     ctx.save();
-    const groundGrad = ctx.createLinearGradient(0, H * 0.7, 0, H);
+    ctx.globalAlpha = 0.08 * flicker;
+    const glowG = ctx.createRadialGradient(fx, fy, 0, fx, fy, baseR * 4);
+    glowG.addColorStop(0, 'rgba(255,120,30,0.3)');
+    glowG.addColorStop(1, 'transparent');
+    ctx.fillStyle = glowG;
+    ctx.beginPath();
+    ctx.arc(fx, fy, baseR * 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Main flame body — teardrop shapes
+    for (let i = 0; i < 3; i++) {
+      const phase = t / (90 + i * 30) + i * 2.1;
+      const sway = Math.sin(phase) * baseR * 0.3;
+      const h = baseR * (1.5 + 0.4 * Math.sin(phase * 1.3)) * flicker2;
+      const w = baseR * (0.5 + 0.2 * Math.sin(phase * 0.8));
+
+      ctx.save();
+      ctx.translate(fx + sway * (i - 1) * 0.3, fy);
+
+      // Outer orange flame
+      ctx.globalAlpha = 0.35 * flicker;
+      ctx.fillStyle = '#e8650a';
+      ctx.beginPath();
+      ctx.moveTo(-w, 0);
+      ctx.quadraticCurveTo(-w * 0.5, -h * 0.6, sway * 0.5, -h);
+      ctx.quadraticCurveTo(w * 0.5, -h * 0.6, w, 0);
+      ctx.closePath();
+      ctx.fill();
+
+      // Inner yellow core
+      ctx.globalAlpha = 0.3 * flicker2;
+      ctx.fillStyle = '#ffcc33';
+      ctx.beginPath();
+      ctx.moveTo(-w * 0.5, 0);
+      ctx.quadraticCurveTo(-w * 0.2, -h * 0.4, sway * 0.3, -h * 0.7);
+      ctx.quadraticCurveTo(w * 0.3, -h * 0.4, w * 0.5, 0);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    // Ember/hot base
+    ctx.save();
+    ctx.globalAlpha = 0.2 * flicker;
+    ctx.fillStyle = '#cc3300';
+    ctx.beginPath();
+    ctx.ellipse(fx, fy + 2, baseR * 0.8, baseR * 0.3, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawScene() {
+    // ── Haze overlay — slight warm atmospheric tint ──
+    ctx.save();
+    const hazeGrad = ctx.createRadialGradient(0.75 * W, 0.1 * H, 0, 0.75 * W, 0.1 * H, H * 0.9);
+    hazeGrad.addColorStop(0, 'rgba(80,40,10,0.03)');
+    hazeGrad.addColorStop(1, 'rgba(80,40,10,0)');
+    ctx.fillStyle = hazeGrad;
+    ctx.fillRect(0, 0, W, H);
+    ctx.restore();
+
+    // ── Ground gradient — darker band at bottom ──
+    ctx.save();
+    const groundGrad = ctx.createLinearGradient(0, H * 0.6, 0, H);
     groundGrad.addColorStop(0, 'rgba(26,24,20,0)');
-    groundGrad.addColorStop(1, 'rgba(26,24,20,0.06)');
+    groundGrad.addColorStop(1, 'rgba(26,24,20,0.09)');
     ctx.fillStyle = groundGrad;
-    ctx.fillRect(0, H * 0.7, W, H * 0.3);
+    ctx.fillRect(0, H * 0.6, W, H * 0.4);
     ctx.restore();
 
     // ── Scorch marks ──
     ctx.save();
     scorchMarks.forEach(s => {
-      ctx.globalAlpha = 0.1;
+      ctx.globalAlpha = 0.14;
       ctx.fillStyle = '#1a1814';
       ctx.beginPath();
-      ctx.ellipse(s.x * W, s.y * H, s.rx, s.ry, 0.2, 0, Math.PI * 2);
+      ctx.ellipse(s.x * W, s.y * H, s.rx, s.ry, s.angle, 0, Math.PI * 2);
       ctx.fill();
     });
     ctx.restore();
@@ -1221,8 +1324,10 @@ revealEls.forEach(el => observer.observe(el));
     // ── Debris chunks ──
     ctx.save();
     debrisChunks.forEach(d => {
-      ctx.globalAlpha = 0.5;
+      ctx.globalAlpha = 0.55;
       ctx.fillStyle = d.color;
+      ctx.strokeStyle = 'rgba(26,24,20,0.3)';
+      ctx.lineWidth = 0.5;
       ctx.beginPath();
       const dx = d.x * W, dy = d.y * H;
       ctx.moveTo(dx + d.pts[0][0], dy + d.pts[0][1]);
@@ -1231,103 +1336,210 @@ revealEls.forEach(el => observer.observe(el));
       }
       ctx.closePath();
       ctx.fill();
+      ctx.stroke();
     });
     ctx.restore();
 
-    // ── Crashed plane — upper right area ──
+    // ── Gouge / skid mark from crash landing ──
     ctx.save();
-    const planeX = 0.76 * W;
-    const planeY = 0.10 * H;
-    const tilt = -0.26; // ~15 degrees
+    ctx.globalAlpha = 0.07;
+    ctx.strokeStyle = '#1a1814';
+    ctx.lineWidth = 8;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(0.50 * W, 0.30 * H);
+    ctx.quadraticCurveTo(0.62 * W, 0.22 * H, 0.72 * W, 0.16 * H);
+    ctx.stroke();
+    // Secondary skid
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.moveTo(0.52 * W, 0.32 * H);
+    ctx.quadraticCurveTo(0.64 * W, 0.24 * H, 0.74 * W, 0.18 * H);
+    ctx.stroke();
+    ctx.restore();
 
-    // Fuselage section
+    // ── Crashed plane — upper right, BIGGER and more visible ──
+    ctx.save();
+    const planeX = 0.73 * W;
+    const planeY = 0.12 * H;
+    const tilt = -0.22;
+
+    // Fuselage section — main body
     ctx.save();
     ctx.translate(planeX, planeY);
     ctx.rotate(tilt);
-    ctx.globalAlpha = 0.35;
+    ctx.globalAlpha = 0.55;
     // Main fuselage body
     ctx.fillStyle = '#4a4642';
-    roundRect(ctx, -55, -10, 110, 20, 8);
+    ctx.strokeStyle = 'rgba(26,24,20,0.4)';
+    ctx.lineWidth = 1.5;
+    roundRect(ctx, -80, -16, 160, 32, 12);
     ctx.fill();
-    // Belly stripe
+    ctx.stroke();
+    // Belly stripe (airline livery)
     ctx.fillStyle = '#6a6660';
-    ctx.fillRect(-45, 2, 90, 5);
+    ctx.globalAlpha = 0.45;
+    ctx.fillRect(-65, 3, 130, 7);
+    // Upper stripe accent
+    ctx.fillStyle = '#5a5652';
+    ctx.fillRect(-65, -12, 130, 4);
     // Window dots
-    ctx.fillStyle = '#5a5854';
-    ctx.globalAlpha = 0.25;
-    for (let i = 0; i < 6; i++) {
+    ctx.fillStyle = '#7a7874';
+    ctx.globalAlpha = 0.4;
+    for (let i = 0; i < 9; i++) {
       ctx.beginPath();
-      ctx.arc(-35 + i * 14, -3, 2, 0, Math.PI * 2);
+      ctx.arc(-55 + i * 14, -4, 2.5, 0, Math.PI * 2);
       ctx.fill();
     }
-    // Jagged break on one end
-    ctx.globalAlpha = 0.35;
+    // Jagged break on the right end
+    ctx.globalAlpha = 0.55;
     ctx.fillStyle = '#3a3632';
     ctx.beginPath();
-    ctx.moveTo(55, -10);
-    ctx.lineTo(62, -6);
-    ctx.lineTo(58, -1);
-    ctx.lineTo(64, 3);
-    ctx.lineTo(60, 7);
-    ctx.lineTo(55, 10);
+    ctx.moveTo(80, -16);
+    ctx.lineTo(90, -10);
+    ctx.lineTo(85, -4);
+    ctx.lineTo(94, 2);
+    ctx.lineTo(88, 8);
+    ctx.lineTo(92, 14);
+    ctx.lineTo(80, 16);
+    ctx.closePath();
+    ctx.fill();
+    // Jagged break on the left end
+    ctx.beginPath();
+    ctx.moveTo(-80, -16);
+    ctx.lineTo(-88, -10);
+    ctx.lineTo(-83, -3);
+    ctx.lineTo(-90, 4);
+    ctx.lineTo(-84, 10);
+    ctx.lineTo(-80, 16);
+    ctx.closePath();
+    ctx.fill();
+    // Damage dents / dark patches
+    ctx.globalAlpha = 0.2;
+    ctx.fillStyle = '#2a2622';
+    ctx.beginPath();
+    ctx.ellipse(20, 2, 12, 6, 0.3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(-30, -2, 8, 5, -0.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Broken wing stub — left side, angled down
+    ctx.save();
+    ctx.translate(planeX - 30, planeY + 8);
+    ctx.rotate(tilt + 0.35);
+    ctx.globalAlpha = 0.5;
+    ctx.fillStyle = '#4a4642';
+    ctx.strokeStyle = 'rgba(26,24,20,0.3)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(-55, 28);
+    ctx.lineTo(-48, 34);
+    ctx.lineTo(8, 8);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    // Wing tip bent/crumpled
+    ctx.globalAlpha = 0.4;
+    ctx.fillStyle = '#3a3632';
+    ctx.beginPath();
+    ctx.moveTo(-55, 28);
+    ctx.lineTo(-62, 35);
+    ctx.lineTo(-52, 38);
+    ctx.lineTo(-48, 34);
     ctx.closePath();
     ctx.fill();
     ctx.restore();
 
-    // Broken wing stub — sticking out from fuselage
+    // Right wing fragment — broken off, lying separately
     ctx.save();
-    ctx.translate(planeX - 15, planeY + 5);
-    ctx.rotate(tilt + 0.3);
-    ctx.globalAlpha = 0.3;
+    ctx.translate(planeX + 50, planeY + 25);
+    ctx.rotate(0.8);
+    ctx.globalAlpha = 0.4;
     ctx.fillStyle = '#4a4642';
     ctx.beginPath();
     ctx.moveTo(0, 0);
-    ctx.lineTo(-35, 18);
-    ctx.lineTo(-30, 22);
-    ctx.lineTo(5, 6);
+    ctx.lineTo(35, -8);
+    ctx.lineTo(40, -3);
+    ctx.lineTo(8, 7);
     ctx.closePath();
     ctx.fill();
     ctx.restore();
 
-    // Detached tail section — offset and tilted the other way
+    // Detached tail section — offset further, bigger
     ctx.save();
-    ctx.translate(planeX + 70, planeY - 8);
-    ctx.rotate(0.35);
-    ctx.globalAlpha = 0.3;
+    ctx.translate(planeX + 105, planeY - 10);
+    ctx.rotate(0.4);
+    ctx.globalAlpha = 0.45;
     ctx.fillStyle = '#4a4642';
-    // Vertical stabilizer
+    ctx.strokeStyle = 'rgba(26,24,20,0.3)';
+    ctx.lineWidth = 1;
+    // Vertical stabilizer (fin)
     ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(-5, -20);
-    ctx.lineTo(8, -18);
-    ctx.lineTo(10, 0);
+    ctx.moveTo(0, 5);
+    ctx.lineTo(-8, -30);
+    ctx.lineTo(12, -26);
+    ctx.lineTo(14, 5);
     ctx.closePath();
     ctx.fill();
+    ctx.stroke();
     // Horizontal stabilizer
-    ctx.fillRect(-12, -2, 24, 5);
+    ctx.fillRect(-18, -2, 36, 7);
+    ctx.strokeRect(-18, -2, 36, 7);
+    // Tail stub fuselage fragment
+    ctx.globalAlpha = 0.4;
+    roundRect(ctx, -10, 2, 22, 12, 4);
+    ctx.fill();
+    ctx.restore();
+
+    // Nose cone fragment — far left of wreck
+    ctx.save();
+    ctx.translate(planeX - 95, planeY + 15);
+    ctx.rotate(-0.4);
+    ctx.globalAlpha = 0.35;
+    ctx.fillStyle = '#4a4642';
+    ctx.beginPath();
+    ctx.moveTo(0, -8);
+    ctx.quadraticCurveTo(-20, -6, -28, 0);
+    ctx.quadraticCurveTo(-20, 6, 0, 8);
+    ctx.closePath();
+    ctx.fill();
     ctx.restore();
 
     ctx.restore();
 
-    // ── Smoke wisps — animated particles from wreckage ──
+    // ── Fires ──
+    fires.forEach(f => {
+      drawFire(f.x * W, f.y * H, f.size);
+    });
+
+    // ── Smoke wisps — animated particles ──
     ctx.save();
     smokeParticles.forEach(p => {
-      // Draw
-      ctx.globalAlpha = p.alpha * 0.5;
-      ctx.fillStyle = '#6a6660';
+      // Draw — darker smoke from fires
+      ctx.globalAlpha = p.alpha * 0.6;
+      ctx.fillStyle = '#504840';
       ctx.beginPath();
       ctx.arc(p.x * W, p.y * H, p.size, 0, Math.PI * 2);
       ctx.fill();
+      // Lighter outer ring
+      ctx.globalAlpha = p.alpha * 0.2;
+      ctx.beginPath();
+      ctx.arc(p.x * W, p.y * H, p.size * 1.6, 0, Math.PI * 2);
+      ctx.fill();
 
-      // Update — drift up and fade, then respawn
+      // Update — drift up and fade, then respawn near origin
       p.y -= p.speed;
-      p.alpha -= 0.0015;
-      p.size += 0.02;
+      p.x += Math.sin(Date.now() / 2000 + p.originX * 10) * 0.00008; // gentle sway
+      p.alpha -= 0.0012;
+      p.size += 0.03;
       if (p.alpha <= 0) {
-        p.y = 0.08 + Math.random() * 0.05;
-        p.x = 0.74 + Math.random() * 0.08;
-        p.alpha = 0.2 + Math.random() * 0.15;
-        p.size = 3 + Math.random() * 2;
+        p.y = p.originY + (Math.random() - 0.5) * 0.03;
+        p.x = p.originX + (Math.random() - 0.5) * 0.04;
+        p.alpha = 0.2 + Math.random() * 0.2;
+        p.size = 3 + Math.random() * 3;
       }
     });
     ctx.restore();
